@@ -175,20 +175,27 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             if (xmlKey is XmlTextKey textKey)
                 return textKey.Text;
 
-            return xmlKey.Label ?? xmlKey.Symbol;
+            return xmlKey.Label ?? xmlKey.Symbol.Value;
         }
 
-        private Geometry flipGeometry(Geometry geom)
+        private Geometry flipUpDown(Geometry geom)
         {
-            // We need to flip icon (up <-> down) to match coordinate system
-
             ScaleTransform transform = new ScaleTransform(1, -1);
             PathGeometry geometryTransformed = Geometry.Combine(Geometry.Empty, geom, GeometryCombineMode.Union, transform);
             return geometryTransformed;
         }
 
-        private Geometry parseGeometryString(string geomString)
+        private Geometry flipLeftRight(Geometry geom)
+        {            
+            ScaleTransform transform = new ScaleTransform(-1, 1);
+            PathGeometry geometryTransformed = Geometry.Combine(Geometry.Empty, geom, GeometryCombineMode.Union, transform);
+            return geometryTransformed;
+        }
+
+        private Geometry parseGeometry(XmlDynamicSymbol xmlGeometry)
         {
+            string geomString = xmlGeometry.Value;
+
             // First try in-built Optikey symbol
             Geometry geom = (Geometry)Application.Current.Resources[geomString];
 
@@ -199,7 +206,8 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 {
                     var icon = new PackIconMaterialDesign();
                     icon.Kind = result;
-                    geom = flipGeometry(Geometry.Parse(icon.Data));
+                    // we need to always flip once to match coordinate system                   
+                    geom = flipUpDown(Geometry.Parse(icon.Data));
                 }
             }
             // RPG Awesome
@@ -208,9 +216,16 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 {
                     var icon = new PackIconRPGAwesome();
                     icon.Kind = result;
-                    geom = flipGeometry(Geometry.Parse(icon.Data));
+                    // we need to always flip once to match coordinate system
+                    geom = flipUpDown(Geometry.Parse(icon.Data));
                 }
             }
+
+            // Apply transformations
+            if (xmlGeometry.FlipLeftRight)
+                geom = flipLeftRight(geom);
+            if (xmlGeometry.FlipUpDown)
+                geom = flipUpDown(geom);
 
             return geom;
         }
@@ -251,7 +266,8 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             if (xmlKey.Symbol != null)
             {
-                Geometry geom = (Geometry)this.Resources[xmlKey.Symbol];
+                Geometry geom = parseGeometry(xmlKey.Symbol);
+                
                 if (geom != null)
                 {
                     newKey.SymbolGeometry = geom;
@@ -454,7 +470,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 if (dynamicItem is XmlDynamicKey dynamicKey)
                 {
                     vLabel = (!string.IsNullOrEmpty(dynamicKey.Label)) ? " with label '" + dynamicKey.Label + "'"
-                        : (!string.IsNullOrEmpty(dynamicKey.Symbol)) ? " with symbol '" + dynamicKey.Symbol + "'"
+                        : (!string.IsNullOrEmpty(dynamicKey.Symbol?.Value)) ? " with symbol '" + dynamicKey.Symbol.Value + "'"
                         : " with no label or symbol";
                 }
                 else if (dynamicItem is XmlDynamicScratchpad)
@@ -500,7 +516,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 if (dynamicItem is XmlDynamicKey dynamicKey)
                 {
                     vLabel = (!string.IsNullOrEmpty(dynamicKey.Label)) ? " with label '" + dynamicKey.Label + "'"
-                        : (!string.IsNullOrEmpty(dynamicKey.Symbol)) ? " with symbol '" + dynamicKey.Symbol + "'"
+                        : (!string.IsNullOrEmpty(dynamicKey.Symbol?.Value)) ? " with symbol '" + dynamicKey.Symbol.Value + "'"
                         : " with no label or symbol";
                 }
                 else if (dynamicItem is XmlDynamicScratchpad)
@@ -884,7 +900,8 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             if (xmlKey.Symbol != null)
             {
-                Geometry geom = (Geometry)this.Resources[xmlKey.Symbol];
+                Geometry geom = parseGeometryString(xmlKey.Symbol);
+
                 if (geom != null)
                     newKey.SymbolGeometry = geom;
                 else
@@ -1246,7 +1263,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             }
             else
             {
-                Log.ErrorFormat("Incomplete plugin key configuration in key {0}", xmlKey.Label ?? xmlKey.Symbol);
+                Log.ErrorFormat("Incomplete plugin key configuration in key {0}", xmlKey.Label ?? xmlKey.Symbol.Value);
             }
 
             PlaceKeyInPosition(newKey, xmlKey.Row, xmlKey.Col, xmlKey.Height, xmlKey.Width);
