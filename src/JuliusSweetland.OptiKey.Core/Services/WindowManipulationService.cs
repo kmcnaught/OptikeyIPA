@@ -621,6 +621,7 @@ namespace JuliusSweetland.OptiKey.Services
 
         public void SetOpacityOverride(string opacityString)
         {
+            // Try to parse a string override request
             if (!String.IsNullOrEmpty(opacityString))
             {
                 if (double.TryParse(opacityString, out double opacity))
@@ -629,7 +630,16 @@ namespace JuliusSweetland.OptiKey.Services
                     return;
                 }
             }
-            window.Opacity = getOpacity();
+            // Otherwise reset to default value 
+            WindowStates windowState = getWindowState();
+            if (windowState == WindowStates.Docked)
+            {
+                window.Opacity = 1.0;
+            }
+            else
+            {
+                window.Opacity = getOpacity();
+            }
         }
 
         public void ResizeDockToCollapsed()
@@ -1015,9 +1025,16 @@ namespace JuliusSweetland.OptiKey.Services
         {
             Log.Info("ApplySavedState called");
 
-            var windowState = getWindowState();
-            window.Opacity = getOpacity();
+            var windowState = getWindowState();            
             var dockPosition = getDockPosition();
+            if (windowState == WindowStates.Docked)
+            {
+                window.Opacity = 1.0;
+            }
+            else
+            {
+                window.Opacity = getOpacity();
+            }
 
             SetResizeState();
             switch (windowState)
