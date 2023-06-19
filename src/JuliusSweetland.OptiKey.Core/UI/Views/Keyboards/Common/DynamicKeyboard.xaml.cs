@@ -18,6 +18,9 @@ using System.Collections.Generic;
 using JuliusSweetland.OptiKey.UI.Windows;
 using JuliusSweetland.OptiKey.Services;
 using JuliusSweetland.OptiKey.UI.ValueConverters;
+using JuliusSweetland.OptiKey.Properties;
+using MahApps.Metro.IconPacks;
+using System.Windows.Media.Imaging;
 
 namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 {
@@ -916,12 +919,21 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             if (xmlKey.Symbol != null)
             {
-                Geometry geom = parseGeometryString(xmlKey.Symbol);
-
-                if (geom != null)
-                    newKey.SymbolGeometry = geom;
+                if (File.Exists(xmlKey.Symbol.Value))
+                    newKey.SymbolImage = new BitmapImage(new Uri(xmlKey.Symbol.Value));
                 else
-                    Log.ErrorFormat("Could not parse {0} as symbol geometry", xmlKey.Symbol);
+                {
+                    Geometry geom = parseGeometry(xmlKey.Symbol);
+
+                    if (geom != null)
+                    {
+                        newKey.SymbolGeometry = geom;
+                    }
+                    else
+                    {
+                        Log.ErrorFormat("Could not parse {0} as symbol geometry or file path", xmlKey.Symbol);
+                    }
+                }
             }
 
             // Add same symbol margin to all keys
