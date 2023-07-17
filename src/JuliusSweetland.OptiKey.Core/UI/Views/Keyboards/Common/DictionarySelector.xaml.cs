@@ -30,8 +30,8 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
         private int pageIndex = 0;
 
         // TODO: Could be user configurable at some point?
-        private int mRows = 3;
-        private int mCols = 4;
+        private int mRows = 6;
+        private int mCols = 5;
 
         #endregion
 
@@ -96,7 +96,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
 
                 // Add keyboard keys, or blanks
-                int maxDicFilesPerPage = (this.mCols) * (this.mRows - 1);
+                int maxDicFilesPerPage = (this.mCols) * (this.mRows - 1) - 1;
                 int totalNumDicFiles = fileArray.Length;
                 int remainingDicFiles = totalNumDicFiles - maxDicFilesPerPage * pageIndex;
                 int nKBs = Math.Min(remainingDicFiles, maxDicFilesPerPage);
@@ -117,7 +117,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
                     if (i < nKBs)
                     {
-                        this.AddDicKey(fileArray[i], r, c);
+                        this.AddDicKey(fileArray[firstKB+i], r, c);
                     }
                     else
                     {
@@ -128,8 +128,19 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                         }
                     }
                 }
-                
-            }            
+
+                // More... key bottom right above back
+                {
+                    Key newKey = new Key();
+                    newKey.SharedSizeGroup = "SingleKey";
+                    newKey.Text = "More...";
+                    if (remainingDicFiles > maxDicFilesPerPage)
+                        newKey.Value = new KeyValue(Enums.FunctionKeys.SelectDictionaries);
+                    this.AddKey(newKey, this.mRows - 2, this.mCols - 1);
+                }
+
+
+            }
             else
             {
                 // Setup grid

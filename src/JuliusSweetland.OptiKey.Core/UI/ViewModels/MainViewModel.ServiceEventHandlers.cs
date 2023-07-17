@@ -1309,6 +1309,9 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                             pageIndex = kb.PageIndex + 1;
                         }
                         Keyboard = new DictionarySelector(backAction, pageIndex);
+                        mainWindowManipulationService.OverridePersistedState(false, "Docked",
+                    "Bottom", "Full", "100%", "60%", "0", "0"); // Empty strings will allow defaults to be used instead
+
                     }
                     break;
 
