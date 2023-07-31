@@ -1289,6 +1289,13 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
 
                 case FunctionKeys.SelectDictionaries:
                     {
+                        if (Settings.Default.KeyboardAndDictionaryLanguage != Languages.Custom)
+                        {
+                            SelectLanguage(Languages.Custom, true);
+                            dictionaryService.ChangeSuggestionMethod(SuggestionMethods.Basic);
+                            RetrieveCachedCustomDictionary();
+                        }
+
                         Log.Info("Changing keyboard to Dictionary Selection.");
 
                         var currentKeyboard2 = Keyboard;
@@ -2440,8 +2447,9 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     break;
 
                 case FunctionKeys.SuggestionsUseBasic:
-                    SelectLanguage(Languages.EnglishUK, true);
+                    SelectLanguage(Languages.Custom, true);
                     dictionaryService.ChangeSuggestionMethod(SuggestionMethods.Basic);
+                    RetrieveCachedCustomDictionary();
                     inputService.RequestSuspend();
                     RaiseToastNotification(Resources.SUCCESS, "Suggestions changed to BASIC", NotificationTypes.Normal, () => inputService.RequestResume());                    
                     break;
@@ -2453,6 +2461,9 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     break;
 
                 case FunctionKeys.SuggestionsUsePresage:
+                    if (Settings.Default.KeyboardAndDictionaryLanguage == Languages.Custom)
+                        CacheCustomDictionary();
+                    SelectLanguage(Languages.EnglishUK, true);
                     dictionaryService.ChangeSuggestionMethod(SuggestionMethods.Presage);
                     inputService.RequestSuspend();
                     RaiseToastNotification(Resources.SUCCESS, "Suggestions changed to PRESAGE", NotificationTypes.Normal, () => inputService.RequestResume());

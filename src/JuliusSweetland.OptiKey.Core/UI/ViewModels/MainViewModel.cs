@@ -678,6 +678,23 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
             }
         }
 
+
+        private List<DictionaryEntry> customDictionaryEntries;
+
+        private void CacheCustomDictionary()
+        {
+            customDictionaryEntries = dictionaryService.GetAllEntries().ToList();
+        }
+
+        private void RetrieveCachedCustomDictionary()
+        {
+            foreach(DictionaryEntry entry in customDictionaryEntries)
+            {
+                dictionaryService.AddNewEntryToCachedDictionary(entry.Entry);            
+            }
+            customDictionaryEntries.Clear();
+        }
+
         private void AddCandidatesToDictionary(List<string> candidates, IKeyboard originalKeyboard, bool saveToFile)
         {
             int n = 0;
