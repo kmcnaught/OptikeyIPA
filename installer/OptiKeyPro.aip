@@ -12,10 +12,10 @@
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="ExtractFilesFirst" Value="1"/>
     <ROW Property="Manufacturer" Value="K McNaught"/>
-    <ROW Property="ProductCode" Value="1025:{3E61D62C-E553-4E64-8089-F64932866FA9} 1026:{6C25081B-5E84-4E6E-95B3-58C3310776BE} 1027:{855B6AC1-F03D-45CE-BD36-5CC1693B8AE4} 1028:{32D0BCA9-D596-4ACC-A13F-04D2EBE0D8E4} 1029:{D132D35C-8F9B-4425-873D-B7A5D61CA612} 1030:{95831970-90E7-4BCC-8FDC-429D3D6EAE81} 1031:{9D1EA11E-2FA7-4C8F-90DD-9F8494129A89} 1032:{65E7C718-37A9-4E34-B05C-C6B0283494FE} 1033:{D312AE4A-0A81-4875-999B-E07CC152C33A} 1035:{44B48C28-AA21-4EDF-AD69-BC80235A5F43} 1036:{B21490B2-2748-4B6E-BC41-CFD67C23BD74} 1037:{E89C0725-08F7-4E56-936D-C0D0E589CB3D} 1038:{C1D81C85-206B-498A-947A-D7899878F6CC} 1039:{AD6377CA-192E-47E5-B6A3-CDD820C11E1D} 1040:{0F95F5C0-9BB3-47A7-A4AB-F94F19F89F12} 1041:{3059DC55-9D81-4277-911F-A15D56AE8FF4} 1042:{9008D510-9B76-4069-BDCB-A9E01A3AE027} 1043:{1D2EDE30-9568-4E2B-9D40-AA93499085F1} 1044:{10CF000C-11A3-40CB-AE84-B2A0387C9043} 1045:{680919A6-0FC7-4881-83F6-9BB67B6AADE9} 1046:{08F22B0B-2B3A-4063-BDC8-088D41F10856} 1049:{61FE79D3-D7DB-4480-895A-9EFCB49844F5} 1050:{E06FE4B9-0D18-4B63-9615-C35DF29222FB} 1051:{3ECAEB69-87D8-43D4-B7F6-5A3F0F0C5681} 1052:{2E3610EA-71A2-41C6-BDDF-7474D5C2CB14} 1053:{8972F4F6-EF30-4726-B859-D02DCDC9D150} 1055:{A136DE46-7919-47C1-9600-5DE1D7B95E89} 1057:{E88BEAB5-C896-4511-98DD-38543084F634} 1058:{36249486-234F-4293-BF42-2DE3746DF3AE} 1060:{9EA3988B-677C-40BA-9772-AEB54BC10E22} 1065:{3C0A7438-9396-4F89-80BF-E67A740B4441} 1087:{CF93A747-3387-4C7D-B743-DBEF82D1265D} 2052:{DCF82D13-72B6-45E7-BD1A-9DEA086902A5} 2057:{2118784C-5A0D-44F6-8FF8-642C09C2F740} 2068:{0AA2332B-A1C8-4C57-B33F-07B93C03E374} 2070:{C9B61BBD-24DC-40A5-A8C3-86FE114ED50E} 2074:{11D93734-3BD3-41CC-AC75-F07EB85282EB} 3082:{447C0BB0-704A-42BD-9706-EB04A851A462} 3098:{A6A3FCEC-F4FA-45E2-812E-8E43BEB49104} " Type="16"/>
+    <ROW Property="ProductCode" Value="1025:{10915656-D5DB-48E5-97E8-4943A622FC27} 1026:{37A7EEB2-5612-4A3D-95C3-D63262915A4C} 1027:{1654B279-58D5-4615-8E22-C14AF6FC3446} 1028:{7713C070-1258-411F-9FC1-BE85047CF801} 1029:{87C1468D-8D1E-40E9-89C5-1A6C9D1D72C0} 1030:{B9A6903A-C337-4508-ADF4-82D9B842DFC0} 1031:{A13C5F17-E627-4658-8345-8C5FF4969448} 1032:{BA16D8FB-F6D6-46E2-8423-9E5DB6EFBB56} 1033:{6275671C-FEB6-410E-9FC7-6EC122BACE7B} 1035:{DD95EA27-DD06-4C5A-A115-9B646478A7F2} 1036:{4422D8AA-7AC7-4B7F-B0A5-7F2C19DBF816} 1037:{4BCFA875-D082-4553-820D-0911400BB545} 1038:{81E2E581-766E-461B-8B2D-19B0AD1ED6DF} 1039:{35E6A450-293B-48CF-9E27-816804766E8D} 1040:{7C2948DD-7AEA-4F5B-8557-A33191D2AD2A} 1041:{913875AD-0FA3-4AE7-A8D4-C45335CBDA76} 1042:{4B342378-DCD4-40BC-A20A-BB08EB56B3B8} 1043:{44A9F07C-171D-43ED-A133-DF32A9C8EF69} 1044:{87378DC4-DAA9-4B74-A0BA-784483FDEDDB} 1045:{E502B287-F8AF-43CB-9D2C-27F2AF51036F} 1046:{15689AFE-2144-477E-BF81-FE97ABD233DC} 1049:{22FB8594-E25E-4040-8698-1358BED691C0} 1050:{8AD68CD5-C159-4621-868D-5567027569BA} 1051:{434EA895-A967-4AAC-8BA7-BD110032CA96} 1052:{5F99B857-CC79-4F95-AD7F-9571ED3D4822} 1053:{9609F1D3-49DF-46BA-BA5D-0C7161F5D941} 1055:{0F147E7A-CEBC-4CA0-ABBD-40C65F231C0F} 1057:{3D58C575-D081-4930-B0E7-007AD85A07FC} 1058:{8678B438-9C45-4252-A951-3E83465F1D88} 1060:{5EB49A1A-22EC-4E3E-8667-E6F7BEAF65FB} 1065:{D1D02DB6-7536-4FC0-9D9D-EB3D00812485} 1087:{1926EAD3-F993-4516-8366-606B836B4700} 2052:{0A440236-C67E-41B6-B591-C02B3B3EC7F7} 2057:{E659A291-1748-4E10-A337-D7169A26EA91} 2068:{5DD0D701-A52E-4F55-9636-EE20E9AB0353} 2070:{C7167595-807F-4110-93A9-916C1C8B7D7D} 2074:{64858C6B-D187-46D6-9369-65D73E21152B} 3082:{71E3FD07-F6B5-425A-AFC8-3881BFEADCBE} 3098:{19059B10-1DF0-4CFC-95C4-5A961260E792} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Optikey Coder"/>
-    <ROW Property="ProductVersion" Value="3.1.18"/>
+    <ROW Property="ProductVersion" Value="3.1.19"/>
     <ROW Property="RUNAPPLICATION" Value="1" Type="4"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{1B122F21-E01E-4287-9762-8310878A0A0D}"/>
@@ -42,6 +42,7 @@
     <ROW Directory="ProgramMenuFolder" Directory_Parent="TARGETDIR" DefaultDir="PROGRA~1|ProgramMenuFolder" IsPseudoRoot="1"/>
     <ROW Directory="Release_Dir" Directory_Parent="APPDIR" DefaultDir=".:Release"/>
     <ROW Directory="Resources_Dir" Directory_Parent="Release_Dir" DefaultDir="RESOUR~1|Resources"/>
+    <ROW Directory="Rime_Dir" Directory_Parent="Release_Dir" DefaultDir="Rime"/>
     <ROW Directory="SHORTCUTDIR" Directory_Parent="TARGETDIR" DefaultDir="SHORTC~1|SHORTCUTDIR" IsPseudoRoot="1"/>
     <ROW Directory="Samples_1_Dir" Directory_Parent="Keyboards_Dir" DefaultDir="Samples"/>
     <ROW Directory="Sounds_Dir" Directory_Parent="Resources_Dir" DefaultDir="Sounds"/>
@@ -65,6 +66,7 @@
     <ROW Directory="kaGE_Dir" Directory_Parent="Release_Dir" DefaultDir="ka-GE"/>
     <ROW Directory="koKR_Dir" Directory_Parent="Release_Dir" DefaultDir="ko-KR"/>
     <ROW Directory="nl_Dir" Directory_Parent="Release_Dir" DefaultDir="nl"/>
+    <ROW Directory="opencc_Dir" Directory_Parent="Rime_Dir" DefaultDir="opencc"/>
     <ROW Directory="plPL_Dir" Directory_Parent="Release_Dir" DefaultDir="pl-PL"/>
     <ROW Directory="ptPT_Dir" Directory_Parent="Release_Dir" DefaultDir="pt-PT"/>
     <ROW Directory="ruRU_Dir" Directory_Parent="Release_Dir" DefaultDir="ru-RU"/>
@@ -74,6 +76,7 @@
     <ROW Directory="trTR_Dir" Directory_Parent="Release_Dir" DefaultDir="tr-TR"/>
     <ROW Directory="ukUA_Dir" Directory_Parent="Release_Dir" DefaultDir="uk-UA"/>
     <ROW Directory="urPK_Dir" Directory_Parent="Release_Dir" DefaultDir="ur-PK"/>
+    <ROW Directory="zhTW_Dir" Directory_Parent="Release_Dir" DefaultDir="zh-TW"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="AI_ExePath" ComponentId="{073D123B-F477-4A68-83F4-1CE1C6D2DD68}" Directory_="APPDIR" Attributes="4" KeyPath="AI_ExePath"/>
@@ -172,8 +175,10 @@
     <ROW Component="log4net.dll" ComponentId="{43675F54-8BFA-4D98-83C1-AF42DF50CAE2}" Directory_="Release_Dir" Attributes="0" KeyPath="log4net.dll"/>
     <ROW Component="myGazeAPI.dll" ComponentId="{A20ABC94-3B6F-4D8F-86EC-12FCFA02F0BB}" Directory_="Release_Dir" Attributes="0" KeyPath="myGazeAPI.dll"/>
     <ROW Component="nunit.framework.dll" ComponentId="{A1DB8119-C416-4E9A-9A30-3362BBECB808}" Directory_="Release_Dir" Attributes="0" KeyPath="nunit.framework.dll"/>
+    <ROW Component="opencc" ComponentId="{F047CE3B-6457-40D2-88A7-D6B0363450DC}" Directory_="opencc_Dir" Attributes="0"/>
     <ROW Component="presage.net.dll" ComponentId="{AFA0A1F5-0A82-4B4D-BF4C-F720B33408C0}" Directory_="Release_Dir" Attributes="0" KeyPath="presage.net.dll"/>
     <ROW Component="swresample3.dll" ComponentId="{E3938E18-2776-41A8-A388-8751CD031809}" Directory_="Release_Dir" Attributes="0" KeyPath="swresample3.dll"/>
+    <ROW Component="zhTW" ComponentId="{CAEFF875-F622-4F85-B25C-9576D57529AC}" Directory_="zhTW_Dir" Attributes="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
     <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0"/>
@@ -389,7 +394,6 @@
     <ROW File="Demo_Minecraft.xml_1" Component_="Demo_Bottom.xml_1" FileName="DEMO_M~1.XML|Demo_Minecraft.xml" Attributes="0" SourcePath="..\src\JuliusSweetland.OptiKey.Pro\bin\Release\Resources\Keyboards\Samples\Demo_Minecraft.xml" SelfReg="false"/>
     <ROW File="swresample3.dll" Component_="swresample3.dll" FileName="SWRESA~1.DLL|swresample-3.dll" Attributes="0" SourcePath="..\src\JuliusSweetland.OptiKey.Pro\bin\Release\swresample-3.dll" SelfReg="false"/>
     <ROW File="Custom.dic" Component_="CatalanSpain.dic" FileName="Custom.dic" Attributes="0" SourcePath="..\src\JuliusSweetland.OptiKey.Pro\bin\Release\Dictionaries\Custom.dic" SelfReg="false"/>
-    <ROW File="log4net.xml" Component_="Bass.Net.xml" FileName="log4net.xml" Attributes="0" SourcePath="..\src\JuliusSweetland.OptiKey.Pro\bin\Release\log4net.xml" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -633,6 +637,8 @@
     <ROW Directory_="SHORTCUTDIR" Component_="SHORTCUTDIR" ManualDelete="false"/>
     <ROW Directory_="APPDIR" Component_="APPDIR" ManualDelete="true"/>
     <ROW Directory_="Optikey_Dir" Component_="Optikey" ManualDelete="false"/>
+    <ROW Directory_="opencc_Dir" Component_="opencc" ManualDelete="false"/>
+    <ROW Directory_="zhTW_Dir" Component_="zhTW" ManualDelete="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCustActComponent">
     <ROW Action="AI_AppSearchEx" Type="1" Source="Prereq.dll" Target="DoAppSearchEx"/>
@@ -785,6 +791,8 @@
     <ROW Feature_="MainFeature" Component_="AltAlphaHorizontalKeyboard.xml_1"/>
     <ROW Feature_="MainFeature" Component_="Demo_Bottom.xml_1"/>
     <ROW Feature_="MainFeature" Component_="swresample3.dll"/>
+    <ROW Feature_="MainFeature" Component_="opencc"/>
+    <ROW Feature_="MainFeature" Component_="zhTW"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="Pro.exe" SourcePath="..\src\JuliusSweetland.OptiKey.Pro\Pro.ico" Index="0"/>
