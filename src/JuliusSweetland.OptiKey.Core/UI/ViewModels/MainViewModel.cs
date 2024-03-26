@@ -679,7 +679,7 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
         }
 
 
-        private List<DictionaryEntry> customDictionaryEntries;
+        private List<DictionaryEntry> customDictionaryEntries = new List<DictionaryEntry>();
 
         private void CacheCustomDictionary()
         {
