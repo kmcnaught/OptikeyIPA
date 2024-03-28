@@ -12,10 +12,10 @@
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="ExtractFilesFirst" Value="1"/>
     <ROW Property="Manufacturer" Value="K McNaught"/>
-    <ROW Property="ProductCode" Value="1033:{527745B0-D243-4493-8E2D-C54140558086} 2057:{C2484490-1518-4A9F-BC98-3ABE26437E74} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{051500E3-7837-4557-A572-7220995BB5BB} 2057:{D79B8752-F7BD-4A27-9776-835F2B0E6851} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Optikey Coder"/>
-    <ROW Property="ProductVersion" Value="3.1.20"/>
+    <ROW Property="ProductVersion" Value="3.1.21"/>
     <ROW Property="RUNAPPLICATION" Value="1" Type="4"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{1B122F21-E01E-4287-9762-8310878A0A0D}"/>
