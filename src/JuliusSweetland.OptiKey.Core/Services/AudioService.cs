@@ -234,6 +234,8 @@ namespace JuliusSweetland.OptiKey.Services
 
         private void SpeakWithMicrosoftSpeechLibrary(string textToSpeak, Action onComplete, int? volume, int? rate, string voice)
         {
+           
+
             var voiceToUse = voice ?? Settings.Default.SpeechVoice;
             if (!string.IsNullOrWhiteSpace(voiceToUse))
             {
@@ -302,6 +304,34 @@ namespace JuliusSweetland.OptiKey.Services
             }
 
             //Speak
+
+            // HACK - if using phonemes, hardcode the voice for now
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            string str = "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\">";
+            str += "    <voice name=\"en - US - JennyNeural\">";
+            str += $"        <phoneme alphabet=\"ipa\" ph=\"{textToSpeak}\">phonemes</phoneme>";            
+            str += "    </voice>";
+            str += "</speak>";
+
+            bool spokePhonemes = false;
+            try
+            {
+                synth.SpeakSsml(str); // HACK: should be async
+                spokePhonemes = true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+            
+            if (spokePhonemes)
+            {
+                return;
+            }
+
+
+
+
             if (!useLegacyMicrosoftSpeechForVoices.Contains(voiceToUse))
             {
                 onSpeakCompleted = (sender, args) =>

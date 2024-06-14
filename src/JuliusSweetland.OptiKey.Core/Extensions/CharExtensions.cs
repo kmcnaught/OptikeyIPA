@@ -240,5 +240,10 @@ namespace JuliusSweetland.OptiKey.Extensions
                     return null;
             }
         }
+
+        public static bool IsAscii(this char c)
+        {
+            return c <= 127;
+        }
     }
 }

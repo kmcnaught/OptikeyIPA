@@ -30,7 +30,11 @@ namespace JuliusSweetland.OptiKey.Services
         private readonly Action<KeyValue> fireKeySelectionEvent;
         private readonly Dictionary<bool, KeyboardOutputServiceState> state = new Dictionary<bool, KeyboardOutputServiceState>();
 
+
         private string text;
+        private string textWithRimePreedit;
+        private string rimePreedit;
+        
         private string lastProcessedText;
         private bool lastProcessedTextWasSuggestion;
         private bool lastProcessedTextWasMultiKey;
@@ -71,7 +75,21 @@ namespace JuliusSweetland.OptiKey.Services
         public string Text
         {
             get { return text; }
-            set { SetProperty(ref text, value); }
+            set
+            {
+                SetProperty(ref text, value);
+                TextWithRimePreedit = text + rimePreedit;
+            }
+        }
+
+        public string TextWithRimePreedit
+        {
+            get { return textWithRimePreedit; }
+            set
+            {
+                SetProperty(ref textWithRimePreedit, value);
+                RaisePropertyChanged("Text");
+            }
         }
 
         public bool KeyboardIsShiftAware //Not on interface as only accessed via databinding
@@ -475,6 +493,12 @@ namespace JuliusSweetland.OptiKey.Services
                     lastProcessedTextWasSuggestion = false;
                     break;
             }
+        }
+
+        public void ProcessSingleKeyPhoneme(string capturedText)
+        {            
+            rimePreedit += capturedText;            
+            // for now we just append to the text without any special logic
         }
 
         public void ProcessSingleKeyText(string capturedText)
