@@ -72,7 +72,7 @@ namespace JuliusSweetland.OptiKey.Services
         /// Start speaking the supplied text, or cancel the in-progress speech
         /// </summary>
         /// <returns>Indication of whether speech is now in progress</returns>
-        public bool SpeakNewOrInterruptCurrentSpeech(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null)
+        public bool SpeakNewOrInterruptCurrentSpeech(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null, bool isIPA = false)
         {
             Log.Info("SpeakNewOrInterruptCurrentSpeech called");
 
@@ -83,8 +83,8 @@ namespace JuliusSweetland.OptiKey.Services
                 lock (speakCompletedLock)
                 {
                     if (onSpeakCompleted == null && legacySpeakCompleted == null && onMaryTtsSpeakCompleted == null)
-                    {
-                        Speak(textToSpeak, onComplete, volume, rate, voice);
+                    {                        
+                        Speak(textToSpeak, onComplete, volume, rate, voice, isIPA);
                         return true;
                     }
                     CancelSpeech(voice);
@@ -210,7 +210,7 @@ namespace JuliusSweetland.OptiKey.Services
             }
         }
 
-        private async void Speak(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null)
+        private async void Speak(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null, bool isIPA = false)
         {
             Log.InfoFormat("Speaking '{0}' with volume '{1}', rate '{2}' and voice '{3}' and delay {4}ms", textToSpeak, volume, rate, 
                 !Settings.Default.MaryTTSEnabled ? voice : Settings.Default.MaryTTSVoice, Settings.Default.SpeechDelay);
@@ -222,7 +222,11 @@ namespace JuliusSweetland.OptiKey.Services
                 await Task.Delay(Settings.Default.SpeechDelay);
             }
 
-            if (Settings.Default.MaryTTSEnabled)
+            if (isIPA)
+            {
+                PronouncePhonemesWithMicrosoftSpeechLibrary(textToSpeak, onComplete, volume, rate, voice);
+            }
+            else if (Settings.Default.MaryTTSEnabled)
             {
                 SpeakWithMaryTTS(textToSpeak, onComplete, volume, rate);
             }
@@ -232,9 +236,32 @@ namespace JuliusSweetland.OptiKey.Services
             }
         }
 
+        private void PronouncePhonemesWithMicrosoftSpeechLibrary(string textToSpeak, Action onComplete, int? volume, int? rate, string voice)
+        {
+            textToSpeak = textToSpeak.Replace(" ", "");
+
+            // voice is hard-coded for now
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            string str = "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\">";
+            str += "    <voice name=\"en - US - JennyNeural\">";
+            str += $"        <phoneme alphabet=\"ipa\" ph=\"{textToSpeak}\">phonemes</phoneme>";
+            str += "    </voice>";
+            str += "</speak>";
+
+            bool spokePhonemes = false;
+            try
+            {
+                synth.SpeakSsml(str); // HACK: should be async
+                spokePhonemes = true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
         private void SpeakWithMicrosoftSpeechLibrary(string textToSpeak, Action onComplete, int? volume, int? rate, string voice)
         {
-           
 
             var voiceToUse = voice ?? Settings.Default.SpeechVoice;
             if (!string.IsNullOrWhiteSpace(voiceToUse))
@@ -303,34 +330,7 @@ namespace JuliusSweetland.OptiKey.Services
                 }
             }
 
-            //Speak
-
-            // HACK - if using phonemes, hardcode the voice for now
-            SpeechSynthesizer synth = new SpeechSynthesizer();
-            string str = "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\">";
-            str += "    <voice name=\"en - US - JennyNeural\">";
-            str += $"        <phoneme alphabet=\"ipa\" ph=\"{textToSpeak}\">phonemes</phoneme>";            
-            str += "    </voice>";
-            str += "</speak>";
-
-            bool spokePhonemes = false;
-            try
-            {
-                synth.SpeakSsml(str); // HACK: should be async
-                spokePhonemes = true;
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-            
-            if (spokePhonemes)
-            {
-                return;
-            }
-
-
-
+            // Speak
 
             if (!useLegacyMicrosoftSpeechForVoices.Contains(voiceToUse))
             {

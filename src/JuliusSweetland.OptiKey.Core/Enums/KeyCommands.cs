@@ -12,6 +12,9 @@ namespace JuliusSweetland.OptiKey.Enums
         MoveWindow,
         Plugin,
         Text,
-        Wait
+        Wait,
+        Say,
+        Pronounce,
+        TypePhoneme,
     }
 }

@@ -34,7 +34,8 @@ namespace JuliusSweetland.OptiKey.Services
         private string text;
         private string textWithRimePreedit;
         private string rimePreedit;
-        
+        private string lastPhoneme;
+
         private string lastProcessedText;
         private bool lastProcessedTextWasSuggestion;
         private bool lastProcessedTextWasMultiKey;
@@ -89,6 +90,15 @@ namespace JuliusSweetland.OptiKey.Services
             {
                 SetProperty(ref textWithRimePreedit, value);
                 RaisePropertyChanged("Text");
+            }
+        }
+
+        public string LastPhoneme
+        {
+            get { return lastPhoneme; }
+            set
+            {
+                SetProperty(ref lastPhoneme, value);
             }
         }
 
@@ -496,7 +506,8 @@ namespace JuliusSweetland.OptiKey.Services
         }
 
         public void ProcessSingleKeyPhoneme(string capturedText)
-        {            
+        {
+            lastPhoneme = capturedText;
             rimePreedit += capturedText;            
             // for now we just append to the text without any special logic
         }

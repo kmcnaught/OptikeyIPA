@@ -61,6 +61,7 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
         private bool showSuggestions;
         private bool suspendCommands;
         private bool manualModeEnabled;
+        private string lastPhonemePronounced;
         private Action<Point> nextPointSelectionAction;
         private Point? magnifyAtPoint;
         private Action<Point?> magnifiedPointSelectionAction;

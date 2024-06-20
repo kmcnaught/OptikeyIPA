@@ -243,6 +243,8 @@ namespace JuliusSweetland.OptiKey.Enums
         SlovenianSlovenia,
         SpanishSpain,
         Speak,
+        Pronounce,
+        TypeLastPhoneme,
         Suggestion1,
         Suggestion2,
         Suggestion3,
