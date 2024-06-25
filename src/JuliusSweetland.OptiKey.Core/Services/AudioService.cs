@@ -241,23 +241,27 @@ namespace JuliusSweetland.OptiKey.Services
             textToSpeak = textToSpeak.Replace(" ", "");
 
             // voice is hard-coded for now
-            SpeechSynthesizer synth = new SpeechSynthesizer();
-            string str = "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\">";
-            str += "    <voice name=\"en - US - JennyNeural\">";
-            str += $"        <phoneme alphabet=\"ipa\" ph=\"{textToSpeak}\">phonemes</phoneme>";
-            str += "    </voice>";
-            str += "</speak>";
+            using (SpeechSynthesizer synth = new SpeechSynthesizer())
+            {
 
-            bool spokePhonemes = false;
-            try
-            {
-                synth.SpeakSsml(str); // HACK: should be async
-                spokePhonemes = true;
+                var voiceToUse = voice ?? Settings.Default.SpeechVoice;
+
+                synth.SelectVoice(voiceToUse);
+
+                string str = "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\">";
+                str += $"        <phoneme alphabet=\"ipa\" ph=\"{textToSpeak}\">phonemes</phoneme>";
+                str += "</speak>";
+
+                try
+                {
+                    synth.SpeakSsml(str); // HACK: should be async
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
             }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
+            
         }
 
         private void SpeakWithMicrosoftSpeechLibrary(string textToSpeak, Action onComplete, int? volume, int? rate, string voice)
