@@ -240,11 +240,42 @@ namespace JuliusSweetland.OptiKey.Services
         {
             textToSpeak = textToSpeak.Replace(" ", "");
 
-            // voice is hard-coded for now
-            using (SpeechSynthesizer synth = new SpeechSynthesizer())
-            {
+            //FIXME: don't do this every time!
+            using (SpeechSynthesizer synth = new SpeechSynthesizer()) { 
 
                 var voiceToUse = voice ?? Settings.Default.SpeechVoice;
+
+                if (String.IsNullOrEmpty(voiceToUse)) {
+                    VoiceInfo preferredVoice;
+
+                    // Get best fit voice                
+                    var voices = synth.GetInstalledVoices().Select(v => v.VoiceInfo).ToList();
+
+                    // Try to find an en-GB female voice first
+                    preferredVoice = voices.FirstOrDefault(v => v.Culture.Name == "en-GB" && v.Gender == VoiceGender.Female);
+
+                    // If not found, try to find any en-GB voice
+                    if (preferredVoice == null)
+                        preferredVoice = voices.FirstOrDefault(v => v.Culture.Name == "en-GB");
+
+                    // If still not found, try to find any en-* female voice
+                    if (preferredVoice == null)
+                        preferredVoice = voices.FirstOrDefault(v => v.Culture.Name.StartsWith("en") && v.Gender == VoiceGender.Female);
+
+                    // If still not found, try to find any en-* voice
+                    if (preferredVoice == null)
+                        preferredVoice = voices.FirstOrDefault(v => v.Culture.Name.StartsWith("en"));
+
+                    if (preferredVoice == null) {
+                        Log.Error("No suitable voice found for phonemes");
+                        return;
+                    }
+                    else
+                    {
+                        voiceToUse = preferredVoice.Name;
+                    }
+
+                }
 
                 synth.SelectVoice(voiceToUse);
 
