@@ -198,6 +198,28 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             return geometryTransformed;
         }
 
+        private string getValidFilepath(string possibleFilename)
+        {
+            if (Path.IsPathRooted(possibleFilename))
+            {
+                if (File.Exists(possibleFilename))
+                {
+                    return possibleFilename;
+                }
+            }
+            else
+            {
+                var rootDir = Path.GetDirectoryName(inputFilename);
+                var fullPath = Path.Combine(rootDir, possibleFilename);
+                if (File.Exists(fullPath))
+                {
+                    return fullPath;
+                }
+            }
+
+            return null;
+        }
+
         private Geometry parseGeometry(XmlDynamicSymbol xmlGeometry)
         {
             string geomString = xmlGeometry.Value;
@@ -285,15 +307,24 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             if (xmlKey.Symbol != null)
             {
-                Geometry geom = parseGeometry(xmlKey.Symbol);
-                
-                if (geom != null)
+                // First try filepath as `SymbolImage`
+                string imageFilepath = getValidFilepath(xmlKey.Symbol.Value);
+                if (imageFilepath != null)
                 {
-                    newKey.SymbolGeometry = geom;
+                    newKey.SymbolImage = new BitmapImage(new Uri(imageFilepath));
                 }
                 else
-                {
-                    Log.ErrorFormat("Could not parse {0} as symbol geometry", xmlKey.Symbol);
+                {   // Otherwise some kind of `SymbolGeometry`
+                    Geometry geom = parseGeometry(xmlKey.Symbol);
+
+                    if (geom != null)
+                    {
+                        newKey.SymbolGeometry = geom;
+                    }
+                    else
+                    {
+                        Log.ErrorFormat("Could not parse {0} as symbol geometry or file path", xmlKey.Symbol);
+                    }
                 }
             }
 
@@ -919,10 +950,14 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             if (xmlKey.Symbol != null)
             {
-                if (File.Exists(xmlKey.Symbol.Value))
-                    newKey.SymbolImage = new BitmapImage(new Uri(xmlKey.Symbol.Value));
-                else
+                // First try filepath as `SymbolImage`
+                string imageFilepath = getValidFilepath(xmlKey.Symbol.Value);
+                if (imageFilepath != null)
                 {
+                    newKey.SymbolImage = new BitmapImage(new Uri(imageFilepath));
+                }
+                else
+                {   // Otherwise some kind of `SymbolGeometry`
                     Geometry geom = parseGeometry(xmlKey.Symbol);
 
                     if (geom != null)
@@ -931,7 +966,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                     }
                     else
                     {
-                        Log.ErrorFormat("Could not parse {0} as symbol geometry or file path", xmlKey.Symbol);
+                        Log.ErrorFormat("Could not parse {0} as symbol geometry or filepath", xmlKey.Symbol);
                     }
                 }
             }
