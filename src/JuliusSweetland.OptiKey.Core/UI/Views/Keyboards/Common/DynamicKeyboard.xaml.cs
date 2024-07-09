@@ -256,7 +256,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 {
                     geom = Geometry.Parse(geomString);
                 }
-                catch (System.Windows.Markup.XamlParseException ex)
+                catch (Exception ex)
                 {
                     geom = null;
                 }
