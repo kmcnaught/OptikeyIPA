@@ -187,7 +187,7 @@ namespace GetPresagePredictions
                     
                     //Console.Write(" | ");
                 }
-                Clipboard.SetText(all);
+                System.Windows.Clipboard.SetText(all);
 
                 var input = Console.ReadLine();
                 typedSoFar += " " + input;

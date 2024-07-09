@@ -52,6 +52,7 @@ namespace JuliusSweetland.OptiKey.Models
     public class XmlDynamicScratchpad : XmlDynamicItem { }
     public class XmlDynamicSuggestionRow : XmlDynamicItem { }
     public class XmlDynamicSuggestionCol : XmlDynamicItem { }
+    
     public class KeyGroup
     {
         [XmlText]
@@ -84,5 +85,10 @@ namespace JuliusSweetland.OptiKey.Models
             get { return this.FlipUpDown ? "True" : "False"; }
             set { this.FlipUpDown = XmlUtils.ConvertToBoolean(value); }
         }
+    }
+    public class XmlDynamicSuggestionGrid : XmlDynamicItem
+    {
+        [XmlAttribute] public int NumRows { get; set; } = 1;
+        [XmlAttribute] public int NumCols { get; set; } = 1;
     }
 }
