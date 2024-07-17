@@ -279,7 +279,7 @@ namespace JuliusSweetland.OptiKey.Services
 
                 synth.SelectVoice(voiceToUse);
 
-                string str = "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\">";
+                string str = "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\">";
                 str += $"        <phoneme alphabet=\"ipa\" ph=\"{textToSpeak}\">phonemes</phoneme>";
                 str += "</speak>";
 
