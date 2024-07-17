@@ -291,6 +291,8 @@
     <Compile Include="Models\Gamepads\RepeatableTriggerSignal.cs" />
     <Compile Include="Models\Gamepads\XInputControllerState.cs" />
     <Compile Include="Models\Gamepads\XInputListener.cs" />
+    <Compile Include="Models\Quizzes\Question.cs" />
+    <Compile Include="Models\Quizzes\Quiz.cs" />
     <Compile Include="Models\XmlKeyboardModels\XmlSuggestionGrid.xaml.cs">
       <DependentUpon>XmlSuggestionGrid.xaml</DependentUpon>
     </Compile>
@@ -579,6 +581,9 @@
     </Compile>
     <Compile Include="UI\Views\Keyboards\Common\DictionarySelector.xaml.cs">
       <DependentUpon>DictionarySelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\Keyboards\Common\QuizKeyboard.xaml.cs">
+      <DependentUpon>QuizKeyboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Views\Keyboards\Common\Voice.xaml.cs">
       <DependentUpon>Voice.xaml</DependentUpon>
@@ -1550,6 +1555,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Views\Keyboards\Common\DictionarySelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Views\Keyboards\Common\QuizKeyboard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

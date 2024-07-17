@@ -1,0 +1,70 @@
+﻿<!--
+Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserved
+-->
+<controls:KeyboardView x:Class="JuliusSweetland.OptiKey.UI.Views.Keyboards.Common.QuizKeyboard"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:controls="clr-namespace:JuliusSweetland.OptiKey.UI.Controls"
+                       xmlns:models="clr-namespace:JuliusSweetland.OptiKey.Models"
+                       xmlns:valueConverters="clr-namespace:JuliusSweetland.OptiKey.UI.ValueConverters"
+                       xmlns:properties="clr-namespace:JuliusSweetland.OptiKey.Properties"
+                       xmlns:resx="clr-namespace:JuliusSweetland.OptiKey.Properties"
+                       mc:Ignorable="d" 
+                       d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/OptiKey;component/Resources/Icons/KeySymbols.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border BorderBrush="Green" BorderThickness="2">
+
+        <Grid x:Name="TopGrid">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <!-- may be collapsed from code-->
+                <RowDefinition Height="3*" />
+                <!-- height set in code -->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid x:Name="TopBar" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <!-- put top level question prompts in here -->
+            </Grid>
+
+            <!-- todo: bind visibilities so they collapse if value / source is null -->
+            <!-- bind content to "current" question. -->
+
+            <Grid HorizontalAlignment="Center" x:Name="Question" Grid.Row="1" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <controls:Key x:Name="QuestionWordKey" Value="a" SymbolGeometry="{StaticResource SpeakIcon}" Grid.Row="0"/>
+                <Image x:Name="QuestionImage" Source="C:\\Users\\Kirsty\\Downloads\\heart.png" Grid.Row="1" Stretch="UniformToFill"/>
+                <controls:Key x:Name="QuestionContextKey" Value="a" Grid.Row="2"/>
+            </Grid>
+
+             <Grid Grid.IsSharedSizeScope="True" x:Name="AnswersGrid" Grid.Row="1" Grid.Column="1" >
+                <!-- Add Keys dynamically here -->
+            </Grid>
+        </Grid>
+    </Border>
+</controls:KeyboardView>
