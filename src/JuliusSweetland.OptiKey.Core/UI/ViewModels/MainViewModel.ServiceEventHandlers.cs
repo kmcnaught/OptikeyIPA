@@ -2500,6 +2500,12 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     KeyStateService.KeyDownStates[KeyValues.SpeakKey].Value = speechStarted1 ? KeyDownStates.Down : KeyDownStates.Up;
                     break;
 
+
+                case FunctionKeys.Log:
+                    //fixme: create separate logging for quiz
+                    Log.Info(singleKeyValue.String);
+                    break;
+
                 case FunctionKeys.TypeLastPhoneme:
                     if (!String.IsNullOrEmpty(lastPhonemePronounced))
                     {
@@ -2975,6 +2981,12 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                         Settings.Default.SpeechVoice,
                         true,
                         keyCommand.Name == KeyCommands.PronounceSlow);
+                    }
+                    else if (keyCommand.Name == KeyCommands.Log)
+                    {
+                        //fixme: create separate logging for quiz
+                        Log.Info(keyCommand.Value);
+                        break;
                     }
                     else if (keyCommand.Name == KeyCommands.TypePhoneme)
                     {

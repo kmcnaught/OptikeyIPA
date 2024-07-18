@@ -867,6 +867,13 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                         else
                             commandList.Add(new KeyCommand(KeyCommands.PronounceSlow, dynamicPronounceSlow.Value));
                     }
+                    else if (dynamicKey is DynamicLog dynamicLog)
+                    {
+                        if (string.IsNullOrEmpty(dynamicLog.Value))
+                            Log.ErrorFormat("Text not found for {0} ", dynamicLog.Label);
+                        else
+                            commandList.Add(new KeyCommand(KeyCommands.Log, dynamicLog.Value));
+                    }
                     else if (dynamicKey is DynamicTypePhoneme dynamicTypePhoneme)
                     {
                         if (string.IsNullOrEmpty(dynamicTypePhoneme.Value))
