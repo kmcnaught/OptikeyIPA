@@ -244,6 +244,7 @@ namespace JuliusSweetland.OptiKey.Enums
         SpanishSpain,
         Speak,
         Pronounce,
+        PronounceSlow,
         TypeLastPhoneme,
         Suggestion1,
         Suggestion2,

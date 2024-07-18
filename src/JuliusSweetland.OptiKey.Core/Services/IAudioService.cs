@@ -9,6 +9,6 @@ namespace JuliusSweetland.OptiKey.Services
         List<string> GetAvailableVoices();
         List<string> GetAvailableMaryTTSVoices();
         void PlaySound(string file, int volume);
-        bool SpeakNewOrInterruptCurrentSpeech(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null, bool isIPA=false);
+        bool SpeakNewOrInterruptCurrentSpeech(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null, bool isIPA=false, bool slowdownIPA=false);
     }
 }

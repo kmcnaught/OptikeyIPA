@@ -72,7 +72,7 @@ namespace JuliusSweetland.OptiKey.Services
         /// Start speaking the supplied text, or cancel the in-progress speech
         /// </summary>
         /// <returns>Indication of whether speech is now in progress</returns>
-        public bool SpeakNewOrInterruptCurrentSpeech(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null, bool isIPA = false)
+        public bool SpeakNewOrInterruptCurrentSpeech(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null, bool isIPA = false, bool slowerIPA = false)
         {
             Log.Info("SpeakNewOrInterruptCurrentSpeech called");
 
@@ -84,7 +84,7 @@ namespace JuliusSweetland.OptiKey.Services
                 {
                     if (onSpeakCompleted == null && legacySpeakCompleted == null && onMaryTtsSpeakCompleted == null)
                     {                        
-                        Speak(textToSpeak, onComplete, volume, rate, voice, isIPA);
+                        Speak(textToSpeak, onComplete, volume, rate, voice, isIPA, slowerIPA);
                         return true;
                     }
                     CancelSpeech(voice);
@@ -210,7 +210,7 @@ namespace JuliusSweetland.OptiKey.Services
             }
         }
 
-        private async void Speak(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null, bool isIPA = false)
+        private async void Speak(string textToSpeak, Action onComplete, int? volume = null, int? rate = null, string voice = null, bool isIPA = false, bool slowerIPA = false)
         {
             Log.InfoFormat("Speaking '{0}' with volume '{1}', rate '{2}' and voice '{3}' and delay {4}ms", textToSpeak, volume, rate, 
                 !Settings.Default.MaryTTSEnabled ? voice : Settings.Default.MaryTTSVoice, Settings.Default.SpeechDelay);
@@ -224,7 +224,16 @@ namespace JuliusSweetland.OptiKey.Services
 
             if (isIPA)
             {
-                PronouncePhonemesWithMicrosoftSpeechLibrary(textToSpeak, onComplete, volume, rate, voice);
+                PronouncePhonemesWithMicrosoftSpeechLibrary(textToSpeak, onComplete, volume, rate, voice, slowerIPA);
+                //PronouncePhonemesWithMicrosoftSpeechLibrary("ʃip", onComplete, volume, rate, voice);                
+                //PronouncePhonemesWithMicrosoftSpeechLibrary("ʃiːp", onComplete, volume, rate, voice);
+                //PronouncePhonemesWithMicrosoftSpeechLibrary("fuːd/", onComplete, volume, rate, voice);
+                
+                //PronouncePhonemesWithMicrosoftSpeechLibrary("fʊd", onComplete, volume, rate, voice);
+                //PronouncePhonemesWithMicrosoftSpeechLibrary("f", onComplete, volume, rate, voice);
+                //PronouncePhonemesWithMicrosoftSpeechLibrary("", onComplete, volume, rate, voice);
+                //PronouncePhonemesWithMicrosoftSpeechLibrary("", onComplete, volume, rate, voice);
+
             }
             else if (Settings.Default.MaryTTSEnabled)
             {
@@ -236,7 +245,7 @@ namespace JuliusSweetland.OptiKey.Services
             }
         }
 
-        private void PronouncePhonemesWithMicrosoftSpeechLibrary(string textToSpeak, Action onComplete, int? volume, int? rate, string voice)
+        private void PronouncePhonemesWithMicrosoftSpeechLibrary(string textToSpeak, Action onComplete, int? volume, int? rate, string voice, bool slower = false)
         {
             textToSpeak = textToSpeak.Replace(" ", "");
 
@@ -280,7 +289,15 @@ namespace JuliusSweetland.OptiKey.Services
                 synth.SelectVoice(voiceToUse);
 
                 string str = "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\">";
+
+                if (slower)
+                    str += "<prosody rate=\"slow\">";
+
                 str += $"        <phoneme alphabet=\"ipa\" ph=\"{textToSpeak}\">phonemes</phoneme>";
+
+                if (slower)
+                    str += "</prosody>";
+
                 str += "</speak>";
 
                 try

@@ -14,7 +14,8 @@ namespace JuliusSweetland.OptiKey.Enums
         Text,
         Wait,
         Say,
-        Pronounce,
+        Pronounce,        
+        PronounceSlow,
         TypePhoneme,
     }
 }

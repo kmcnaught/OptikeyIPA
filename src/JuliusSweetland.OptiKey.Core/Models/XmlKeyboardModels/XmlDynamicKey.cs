@@ -11,6 +11,7 @@ namespace JuliusSweetland.OptiKey.Models
         [XmlElement("Action", typeof(DynamicAction))]
         [XmlElement("Say", typeof(DynamicSay))]
         [XmlElement("Pronounce", typeof(DynamicPronounce))]
+        [XmlElement("PronounceSlow", typeof(DynamicPronounceSlow))]
         [XmlElement("TypePhoneme", typeof(DynamicTypePhoneme))]
         [XmlElement("ChangeKeyboard", typeof(DynamicLink))]
         [XmlElement("KeyDown", typeof(DynamicKeyDown))]
@@ -68,6 +69,13 @@ namespace JuliusSweetland.OptiKey.Models
 
     public class DynamicPronounce : XmlDynamicKey
     {
+        [XmlText]
+        public string Value { get; set; }
+    }
+
+    public class DynamicPronounceSlow : XmlDynamicKey
+    {
+        // TODO: make prosody an argument of DynamicPronounce instead
         [XmlText]
         public string Value { get; set; }
     }
