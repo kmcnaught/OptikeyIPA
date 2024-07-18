@@ -2982,6 +2982,17 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                         true,
                         keyCommand.Name == KeyCommands.PronounceSlow);
                     }
+                    else if (keyCommand.Name == KeyCommands.Answer)
+                    {
+                        bool correct = Convert.ToBoolean(keyCommand.Value);
+                        string correctString = correct ? "CORRECT" : "INCORRECT";
+                        Log.Info($"Answer is {correctString}");
+                        string message = correct ? "Correct. Hooray!" : "Sorry, try again";
+                        string title = correct ? Resources.SUCCESS : "";
+                        inputService.RequestSuspend();
+                        RaiseToastNotification(title, message, NotificationTypes.Normal, () => inputService.RequestResume());
+                        // FIXME: could move quiz on here, or play hint, etc. 
+                    }
                     else if (keyCommand.Name == KeyCommands.Log)
                     {
                         //fixme: create separate logging for quiz
