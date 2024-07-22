@@ -37,7 +37,8 @@ Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserve
                 <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
 
-            <Grid x:Name="TopBar" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid x:Name="TopBar"  Background="#152341"
+                  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"                  >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
@@ -46,6 +47,12 @@ Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserve
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0" 
+                        Grid.ColumnSpan="3"
+                        BorderBrush="Black"
+                        BorderThickness="10"></Border>
+                        
                 <!-- put top level question prompts in here -->
                 <controls:Key Grid.Row="0" Grid.Column="0"
                       Text="{x:Static resx:Resources.BACK}"
@@ -65,7 +72,8 @@ Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserve
             <!-- todo: bind visibilities so they collapse if value / source is null -->
             <!-- bind content to "current" question. -->
 
-            <Grid HorizontalAlignment="Stretch" x:Name="QuestionGrid" Grid.Row="1" Grid.Column="0">
+            <Grid HorizontalAlignment="Stretch" x:Name="QuestionGrid" 
+                  Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
@@ -81,7 +89,9 @@ Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserve
                 <Image x:Name="QuestionImage" Grid.Row="2"/>
             </Grid>
 
-             <Grid Grid.IsSharedSizeScope="True" x:Name="AnswersGrid" Grid.Row="1" Grid.Column="1" >
+             <Grid Grid.IsSharedSizeScope="True" x:Name="AnswersGrid" 
+                   Background="#162515"
+                   Grid.Row="1" Grid.Column="1">
                 <!-- Add Keys dynamically here -->
             </Grid>
         </Grid>

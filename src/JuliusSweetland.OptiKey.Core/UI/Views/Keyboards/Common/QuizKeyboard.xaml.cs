@@ -1356,7 +1356,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                                    dynKey.Height, dynKey.Width);
             }
             // Hint
-            {
+            /*{
                 XmlDynamicKey dynKey = new XmlDynamicKey();
                 dynKey.Label = "Hint";
                 dynKey.Commands.AddRange(SplitSpeechCommands(question.Hint));
@@ -1368,7 +1368,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 PlaceKeyInPosition(QuestionGrid, newKey,
                                    dynKey.Row, dynKey.Col,
                                    dynKey.Height, dynKey.Width);
-            }
+            }*/
         }
 
         void AddAnswerKey(string option, int row, int column, bool correct, int rowspan=1, int colspan=1)
@@ -1384,12 +1384,17 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             //FIXME: add colour appropriate (once Heather has confirmed layout)            
 
             dynKey.Commands.Add(new DynamicLog($"SLT: Chose answer {option}"));
+            if (option.EndsWith("ː") ||
+                option.EndsWith(":")) // : request is ignored by synth engine
+                dynKey.Commands.Add(new DynamicPronounceSlow(option));
+            else
+                dynKey.Commands.Add(new DynamicPronounce(option));
             dynKey.Commands.Add(new DynamicAnswer(correct));
 
             // FIXME: what do we do at quiz end? Toast? I think this happens
             // via the `Answer` function key handling though
 
-            dynKey.Margin = "50";
+            dynKey.Margin = "120";
 
             dynKey.Row = row;
             dynKey.Col = column;
@@ -1409,7 +1414,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             XmlDynamicKey dynKey = new XmlDynamicKey();
             dynKey.Symbol = new XmlDynamicSymbol("SpeakIcon");
             dynKey.ForegroundColor = "darkgray";
-            dynKey.Margin = "75";
+            dynKey.Margin = "150";
             
             if (option.EndsWith("ː") || 
                 option.EndsWith(":")) // : request is ignored by synth engine
@@ -1431,7 +1436,19 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
         private void SetupOverallQuiz()
         {
             // Main prompt & "next" button etc            
+            {
+                XmlDynamicKey dynKey = new XmlDynamicKey();
+                dynKey.Label = quiz.QuizPromptWritten;
+                dynKey.Commands.AddRange(SplitSpeechCommands(quiz.QuizPromptSpoken));
+                dynKey.Commands.Add(new DynamicLog($"SLT: Played quiz prompt"));
+                dynKey.Row = 0;
+                dynKey.Col = 1;
 
+                Key newKey = AddDynamicKey(dynKey, 1, 1, "T");
+                PlaceKeyInPosition(TopBar, newKey,
+                                   dynKey.Row, dynKey.Col,
+                                   dynKey.Height, dynKey.Width);
+            }
         }
 
         private void SetupKeys(Question question)
@@ -1456,13 +1473,29 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             // In each column, 1 is an answer key, one is a "sound out" key            
             int row = 0;
-            foreach(string answer in question.Options)
+            foreach (string answer in question.Options)
             {
+                // Add a new row definition
                 AnswersGrid.RowDefinitions.Add(new RowDefinition());
-                
+
+                // Create a new Border for the row
+                Border rowBorder = new Border
+                {
+                    BorderBrush = Brushes.Black,
+                    BorderThickness = new Thickness(5)
+                };
+
+                // Set the Grid.Row property to place the border in the correct row
+                Grid.SetRow(rowBorder, row);
+                Grid.SetColumnSpan(rowBorder, 3); // Assuming you want the border to span all columns
+
+                // Add the Border to the Grid
+                AnswersGrid.Children.Add(rowBorder);
+
+                // Add your answer key and sound key
                 AddAnswerKey(answer, row, 0, answer == question.Answer, 1, 2);
                 AddSoundKey(answer, row++, 2);
-            }            
+            }
         }
 
 
