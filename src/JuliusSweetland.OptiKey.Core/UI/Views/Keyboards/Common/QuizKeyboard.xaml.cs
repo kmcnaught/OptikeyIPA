@@ -189,30 +189,62 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             return geometryTransformed;
         }
 
-        private string getValidFilepath(string possibleFilename)
+        private string GetValidImageFile(string filename)
         {
-            if (!String.IsNullOrEmpty(possibleFilename))
+            // List of common image extensions
+            string[] imageExtensions = { ".bmp", ".jpeg", ".jpg", ".png", ".gif", ".tiff" };
+
+            // Check if the filename already has an extension
+            if (Path.HasExtension(filename))
             {
-                if (Path.IsPathRooted(possibleFilename))
+                if (File.Exists(filename))
                 {
-                    if (File.Exists(possibleFilename))
-                    {
-                        return possibleFilename;
-                    }
+                    return filename;
                 }
-                else
+            }
+            else
+            {
+                // Try each image extension
+                foreach (var extension in imageExtensions)
                 {
-                    var rootDir = Path.GetDirectoryName(inputFilename);
-                    var fullPath = Path.Combine(rootDir, possibleFilename);
-                    if (File.Exists(fullPath))
+                    var fullFilename = filename + extension;
+                    if (File.Exists(fullFilename))
                     {
-                        return Path.GetFullPath(fullPath);
+                        return fullFilename;
                     }
                 }
             }
 
             return null;
         }
+
+        private string getValidFilepath(string possibleFilename)
+        {
+            if (!String.IsNullOrEmpty(possibleFilename))
+            {
+                if (Path.IsPathRooted(possibleFilename))
+                {
+                    var validFile = GetValidImageFile(possibleFilename);
+                    if (validFile != null)
+                    {
+                        return validFile;
+                    }
+                }
+                else
+                {
+                    var rootDir = Path.GetDirectoryName(inputFilename);
+                    var fullPath = Path.Combine(rootDir, possibleFilename);
+                    var validFile = GetValidImageFile(fullPath);
+                    if (validFile != null)
+                    {
+                        return Path.GetFullPath(validFile);
+                    }
+                }
+            }
+
+            return null;
+        }
+
 
         private Geometry parseGeometry(XmlDynamicSymbol xmlGeometry)
         {
