@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using JuliusSweetland.OptiKey.Enums;
 using JuliusSweetland.OptiKey.Extensions;
 using JuliusSweetland.OptiKey.Models;
+using JuliusSweetland.OptiKey.Models.Quizzes;
 using JuliusSweetland.OptiKey.Properties;
 using JuliusSweetland.OptiKey.Services.PluginEngine;
 using JuliusSweetland.OptiKey.Services.Suggestions;
@@ -418,6 +419,7 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                 {
                     // will get caught and handled when DynamicKeyboard is created so we are good to ignore here 
                 }
+                
 
                 DynamicKeyboard newDynKeyboard = new DynamicKeyboard(backAction, keyStateService,
                     keyValue.KeyboardFilename, initialKeyStates);
@@ -812,6 +814,20 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
 
                 case FunctionKeys.AddWordsFromFile:
                     AddWordsToDictionaryFromFile(singleKeyValue.String);
+                    break;
+
+                case FunctionKeys.QuizStart:
+
+                    Action backAction = () =>
+                    {
+                        mainWindowManipulationService.ResizeDockToFull();
+                        Keyboard = currentKeyboard;
+                    };
+
+                    DynamicKeyboard newDynKeyboard = new QuizKeyboard(backAction, keyStateService,
+                    singleKeyValue.String, null);
+                    Keyboard = newDynKeyboard;
+
                     break;
 
                 default:
@@ -2626,6 +2642,32 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     RaiseToastNotification("Success", "Reset dictionary to\nEnglish (UK)", NotificationTypes.Normal, () => inputService.RequestResume());
                     break;
 
+                case FunctionKeys.QuizNextQuestion:
+                    QuizState.QuestionNumber++; // yes we get here okay
+
+                    var quizKeyboard = Keyboard as QuizKeyboard;
+
+
+                    // HACK: go back so forced to re-enter
+                    // (in future use something like the Dyn..Key..Selector page indices instead)
+                    //Log.Info("Navigating back from keyboard.");
+                    //var navigableKeyboard2 = Keyboard as IBackAction;
+                    //if (navigableKeyboard2 != null && navigableKeyboard2.BackAction != null)
+                    //{
+                    //    navigableKeyboard2.BackAction();
+                    //}
+
+                    // HACK: create a dyn keyboard to force re-create
+                    if (quizKeyboard != null)
+                    {
+                        DynamicKeyboard newDynKeyboard = new QuizKeyboard(quizKeyboard.BackAction, keyStateService,
+                                                            quizKeyboard.Link, null);
+                        Keyboard = newDynKeyboard;
+                    }
+
+                   
+                    break;
+
             }
 
             keyboardOutputService.ProcessFunctionKey(singleKeyValue.FunctionKey.Value);
@@ -2997,7 +3039,6 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     {
                         //fixme: create separate logging for quiz
                         Log.Info(keyCommand.Value);
-                        break;
                     }
                     else if (keyCommand.Name == KeyCommands.TypePhoneme)
                     {

@@ -301,6 +301,8 @@ namespace JuliusSweetland.OptiKey.Models
         public static readonly KeyValue UrduPakistanKey = new KeyValue(FunctionKeys.UrduPakistan);
         public static readonly KeyValue WebBrowsingKeyboardKey = new KeyValue(FunctionKeys.WebBrowsingKeyboard);
         public static readonly KeyValue YesQuestionResultKey = new KeyValue(FunctionKeys.YesQuestionResult);
+        public static readonly KeyValue QuizNextQuestionKey = new KeyValue(FunctionKeys.QuizNextQuestion);
+
 
         private static readonly Dictionary<Languages, List<KeyValue>> multiKeySelectionKeys;
 

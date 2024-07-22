@@ -650,11 +650,16 @@ namespace JuliusSweetland.OptiKey.UI.Controls
             {
                 newContent = new CommonViews.YesNoQuestion { DataContext = Keyboard };
             }
+            else if (Keyboard is ViewModelKeyboards.QuizKeyboard) // this must come before DynamicKeyboard since a quiz "is a" dynamickeyboard
+            {
+                var kb = Keyboard as ViewModelKeyboards.QuizKeyboard;
+                newContent = new CommonViews.QuizKeyboard(mainWindow, kb.Link, keyFamily, keyValueByGroup, overrideTimesByKey, windowManipulationService) { DataContext = Keyboard };
+            }
             else if (Keyboard is ViewModelKeyboards.DynamicKeyboard)
             {
                 var kb = Keyboard as ViewModelKeyboards.DynamicKeyboard;
                 newContent = new CommonViews.DynamicKeyboard(mainWindow, kb.Link, keyFamily, keyValueByGroup, overrideTimesByKey, windowManipulationService) { DataContext = Keyboard };
-            }
+            }            
             else if (Keyboard is ViewModelKeyboards.DynamicKeyboardSelector)
             {
                 var kb = Keyboard as ViewModelKeyboards.DynamicKeyboardSelector;

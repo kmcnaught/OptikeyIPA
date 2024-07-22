@@ -102,7 +102,28 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                         // Add key to link to keyboard
                         this.AddKeyboardKey(kbInfo, r, c);
                     }
-                    else
+                    else if (i == nKBs) // quiz key if present
+                    {
+                        bool addedQuizKey = false;
+                        string quizzesFolderPath = Path.Combine(keyboardsPath, "quizzes");
+                        if (Directory.Exists(quizzesFolderPath))
+                        {
+                            var jsonFiles = Directory.GetFiles(quizzesFolderPath, "*.json");
+
+                            if (jsonFiles.Length > 0)
+                            {
+                                // For now just take first JSON
+                                // In future support multiple?                                
+                                this.AddQuizKey(jsonFiles[0], r, c);
+                                addedQuizKey = true;
+                            }
+                        }
+                        if (!addedQuizKey)
+                        {
+                            this.AddKey(new Key(), r, c);
+                        }
+                    }
+                    else 
                     {
                         // Add empty/inactive key for consistent aesthetic
                         this.AddKey(new Key(), r, c);
@@ -166,6 +187,16 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             Grid.SetRow(key, row);
             Grid.SetColumnSpan(key, colspan);
             Grid.SetRowSpan(key, rowspan);
+
+        }
+
+        private void AddQuizKey(string filepath, int row, int col)
+        {
+            Key newKey = new Key();
+            newKey.SharedSizeGroup = "SingleKey";            
+            newKey.Text = "quiz";            
+            newKey.Value = new KeyValue(FunctionKeys.QuizStart, filepath);
+            this.AddKey(newKey, row, col);
 
         }
 

@@ -12,8 +12,9 @@ namespace JuliusSweetland.OptiKey.Models
     public class XmlKeyboard
     {
         public XmlKeyboard()
-        {
+        {            
             Name = "";
+            KeyGroups = new List<XmlKeyGroup>();
         }
 
         public XmlGrid Grid

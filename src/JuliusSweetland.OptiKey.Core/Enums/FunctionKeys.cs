@@ -268,6 +268,8 @@ namespace JuliusSweetland.OptiKey.Enums
         SelectDictionaries,
         AddWordsFromFile,
         ClearDictionary,
-        EnglishUK_NoUI
+        EnglishUK_NoUI,
+        QuizStart,
+        QuizNextQuestion        
     }
 }

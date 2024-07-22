@@ -6,7 +6,10 @@ namespace JuliusSweetland.OptiKey.Models
 {
     public class XmlDynamicItem
     {
-        public XmlDynamicItem() { }
+        public XmlDynamicItem() {
+            //default empty list to avoid null
+            KeyGroups = new List<KeyGroup>();
+        }
 
         [XmlElement("DynamicKey", typeof(XmlDynamicKey))]
         [XmlElement("Scratchpad", typeof(XmlDynamicScratchpad))]
@@ -61,6 +64,11 @@ namespace JuliusSweetland.OptiKey.Models
 
     public class XmlDynamicSymbol
     {
+        public XmlDynamicSymbol() { }
+        public XmlDynamicSymbol(string value)
+        {
+            Value = value;
+        }
         [XmlText]
         public string Value { get; set; }
 

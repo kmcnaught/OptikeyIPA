@@ -1175,6 +1175,7 @@ namespace JuliusSweetland.OptiKey
 
         protected static void ValidateDynamicKeyboardLocation()
         {
+
             if (string.IsNullOrEmpty(Settings.Default.DynamicKeyboardsLocation))
             {
                 // First time we set to APPDATA location, user may move through settings later

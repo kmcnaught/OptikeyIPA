@@ -65,24 +65,44 @@ namespace JuliusSweetland.OptiKey.Models
 
     public class DynamicSay : XmlDynamicKey
     {
+        public DynamicSay() { }
+        public DynamicSay(string value)
+        {
+            Value = value;
+        }
         [XmlText]
         public string Value { get; set; }
     }
 
     public class DynamicPronounce : XmlDynamicKey
     {
+        public DynamicPronounce() { }
+        public DynamicPronounce(string value)
+        {
+            Value = value;
+        }
         [XmlText]
         public string Value { get; set; }
     }
 
     public class DynamicLog: XmlDynamicKey
     {
+        public DynamicLog() { }
+        public DynamicLog(string value)
+        {
+            Value = value;
+        }
         [XmlText]
         public string Value { get; set; }
     }
 
     public class DynamicPronounceSlow : XmlDynamicKey
     {
+        public DynamicPronounceSlow() { }
+        public DynamicPronounceSlow(string value)
+        {
+            Value = value;
+        }
         // TODO: make prosody an argument of DynamicPronounce instead
         [XmlText]
         public string Value { get; set; }
@@ -162,12 +182,23 @@ namespace JuliusSweetland.OptiKey.Models
 
     public class DynamicWait : XmlDynamicKey
     {
+        public DynamicWait() { }
+        public DynamicWait(int valueMs)
+        {
+            Value = valueMs.ToString();
+        }
         [XmlText]
         public string Value { get; set; }
     }
 
     public class DynamicAnswer : XmlDynamicKey
     {
+        public DynamicAnswer() { }
+        public DynamicAnswer(bool isCorrect)
+        {
+            Value = isCorrect ? "true" : "false";
+        }
+
         //fixme: maybe an actual bool underlying it?
         [XmlText]
         public string Value { get; set; }

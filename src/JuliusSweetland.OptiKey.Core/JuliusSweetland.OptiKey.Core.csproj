@@ -291,6 +291,7 @@
     <Compile Include="Models\Gamepads\RepeatableTriggerSignal.cs" />
     <Compile Include="Models\Gamepads\XInputControllerState.cs" />
     <Compile Include="Models\Gamepads\XInputListener.cs" />
+    <Compile Include="Models\Quizzes\QuizState.cs" />
     <Compile Include="Models\Quizzes\Question.cs" />
     <Compile Include="Models\Quizzes\Quiz.cs" />
     <Compile Include="Models\XmlKeyboardModels\XmlSuggestionGrid.xaml.cs">
@@ -481,6 +482,7 @@
     <Compile Include="UI\ViewModels\Keyboards\Alpha3.cs" />
     <Compile Include="UI\ViewModels\Keyboards\ConversationAlpha3.cs" />
     <Compile Include="UI\ViewModels\Keyboards\DictionarySelector.cs" />
+    <Compile Include="UI\ViewModels\Keyboards\QuizKeyboard.cs" />
     <Compile Include="UI\ViewModels\Keyboards\DynamicKeyboard.cs" />
     <Compile Include="UI\ViewModels\Keyboards\DynamicKeyboardSelector.cs" />
     <Compile Include="UI\Controls\ToastNotification.cs" />

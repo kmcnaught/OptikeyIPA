@@ -1,4 +1,4 @@
-// Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserved
+﻿// Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserved
 using JuliusSweetland.OptiKey.UI.Controls;
 using JuliusSweetland.OptiKey.Models;
 using JuliusSweetland.OptiKey.Extensions;
@@ -40,6 +40,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
         private readonly IDictionary<KeyValue, TimeSpanOverrides> overrideTimesByKey;
         private readonly IWindowManipulationService windowManipulationService;
         private readonly Quiz quiz;
+        
         public QuizKeyboard(
             MainWindow parentWindow, 
             string inputFile, 
@@ -57,7 +58,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             this.overrideTimesByKey = overrideTimesByKey;
             this.windowManipulationService = windowManipulationService;
 
-            inputFile = @"C:\Users\Kirsty\AppData\Roaming\Optikey\OptiKey\Keyboards\quizzes\DemoQuiz.json";
+            //inputFile = @"C:\Users\Kirsty\AppData\Roaming\Optikey\OptiKey\Keyboards\quizzes\DemoQuiz.json";
 
             // Read in JSON file
             quiz = null;
@@ -85,10 +86,37 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             SetupWindow();
             SetupStyle();
 
-            // Customise for this current question            
-            Question question = quiz.Questions[0];
+            SetupOverallQuiz();
+
+            // Customise for this current question      
+            int q = Math.Min(QuizState.QuestionNumber, quiz.Questions.Count-1); //if end, do sth different
+            Question question = quiz.Questions[q];
             SetupKeys(question);
         }
+
+        public static Dictionary<string, string> PhonemeSymbols = new Dictionary<string, string>
+        {
+            { "iː", "images/sea.png" },
+            { "ɜ", "images/shirt.jpg" },
+            { "ɪə", "images/deer.jpg" },
+            { "ɔː", "images/four.jpg" },
+            { "ʊə", "images/manure.jpg" },
+            { "ɪʊ", "images/music.png" },
+            { "əʊ", "images/bow.png" },
+            { "ɔɪ", "images/boy.png" },
+            { "aʊ", "images/out.png" },
+            { "uː", "images/two.png" },
+            { "eɪ", "images/eight.png" },
+            { "eə", "images/pear.png" },
+            { "ɑː", "images/car.png" },
+            { "ð", "images/this.png" },
+            { "θ", "images/thumb2.jpeg" },
+            { "aɪ", "images/eye.jpg" },
+            { "ʒ", "images/measure.png" },
+            { "ʃ", "images/shhh.png" },
+            { "t͡ʃ", "images/chair.png" },
+            { "ŋ", "images/sing.jpg" }
+        };
 
         private void SetupWindow()
         {
@@ -163,20 +191,23 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
         private string getValidFilepath(string possibleFilename)
         {
-            if (Path.IsPathRooted(possibleFilename))
+            if (!String.IsNullOrEmpty(possibleFilename))
             {
-                if (File.Exists(possibleFilename))
+                if (Path.IsPathRooted(possibleFilename))
                 {
-                    return possibleFilename;
+                    if (File.Exists(possibleFilename))
+                    {
+                        return possibleFilename;
+                    }
                 }
-            }
-            else
-            {
-                var rootDir = Path.GetDirectoryName(inputFilename);
-                var fullPath = Path.Combine(rootDir, possibleFilename);
-                if (File.Exists(fullPath))
+                else
                 {
-                    return fullPath;
+                    var rootDir = Path.GetDirectoryName(inputFilename);
+                    var fullPath = Path.Combine(rootDir, possibleFilename);
+                    if (File.Exists(fullPath))
+                    {
+                        return Path.GetFullPath(fullPath);
+                    }
                 }
             }
 
@@ -348,9 +379,9 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             return newKey;
         }
 
-        private void PlaceKeyInPosition(Key key, int row, int col, int rowSpan = 1, int colSpan = 1)
+        private void PlaceKeyInPosition(Grid grid, Key key, int row, int col, int rowSpan = 1, int colSpan = 1)
         {
-            AnswersGrid.Children.Add(key);
+            grid.Children.Add(key);
             Grid.SetColumn(key, col);
             Grid.SetRow(key, row);
             Grid.SetColumnSpan(key, colSpan);
@@ -708,25 +739,28 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
         //    }
         //}
 
-        private void AddDynamicKey(XmlDynamicKey xmlDynamicKey, int minKeyWidth, int minKeyHeight)
+        private Key AddDynamicKey(XmlDynamicKey xmlDynamicKey, int minKeyWidth, int minKeyHeight, string prefix="")
         {
             if (xmlDynamicKey.Commands.Any())
             {
                 var addCommandList = AddCommandList(xmlDynamicKey, minKeyWidth, minKeyHeight);
                 if (addCommandList != null && addCommandList.Any())
                 {
-                    var xmlKeyValue = new KeyValue($"R{xmlDynamicKey.Row}-C{xmlDynamicKey.Col}")
+                    var xmlKeyValue = new KeyValue($"{prefix}R{xmlDynamicKey.Row}-C{xmlDynamicKey.Col}")
                     {
                         Commands = addCommandList
                     };
-                    CreateDynamicKey(xmlDynamicKey, xmlKeyValue, minKeyWidth, minKeyHeight);
+                    return CreateDynamicKey(xmlDynamicKey, xmlKeyValue, minKeyWidth, minKeyHeight);
                 }
+                return null;
             }
             //place a key that performs no action
             else
-                CreateDynamicKey(xmlDynamicKey, null, minKeyWidth, minKeyHeight);
+                return CreateDynamicKey(xmlDynamicKey, null, minKeyWidth, minKeyHeight);
         }
 
+        //fixme loads of duplicate code, but all has shared state. need to extract to
+        // stateless functions and share.
         private List<KeyCommand> AddCommandList(XmlDynamicKey xmlDynamicKey, int minKeyWidth, int minKeyHeight)
         {
             var xmlKeyValue = new KeyValue($"R{xmlDynamicKey.Row}-C{xmlDynamicKey.Col}");
@@ -752,7 +786,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                             else
                                 commandList.Add(new KeyCommand(KeyCommands.Function, dynamicAction.Value));
 
-                            if (KeyValues.KeysWhichCanBeLockedDown.Contains(commandKeyValue) 
+                            if (KeyValues.KeysWhichCanBeLockedDown.Contains(commandKeyValue)
                                 && !keyFamily.Contains(new Tuple<KeyValue, KeyValue>(xmlKeyValue, commandKeyValue)))
                             {
                                 keyFamily.Add(new Tuple<KeyValue, KeyValue>(xmlKeyValue, commandKeyValue));
@@ -804,7 +838,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                     }
                     else if (dynamicKey is DynamicMove dynamicBounds)
                     {
-                        commandList.Add(new KeyCommand() { Name = KeyCommands.MoveWindow, Value = dynamicBounds.Value } );
+                        commandList.Add(new KeyCommand() { Name = KeyCommands.MoveWindow, Value = dynamicBounds.Value });
                     }
                     else if (dynamicKey is DynamicText dynamicText)
                     {
@@ -827,6 +861,27 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                         else
                             commandList.Add(new KeyCommand(KeyCommands.Pronounce, dynamicPronounce.Value));
                     }
+                    else if (dynamicKey is DynamicPronounceSlow dynamicPronounceSlow)
+                    {
+                        if (string.IsNullOrEmpty(dynamicPronounceSlow.Value))
+                            Log.ErrorFormat("Text not found for {0} ", dynamicPronounceSlow.Label);
+                        else
+                            commandList.Add(new KeyCommand(KeyCommands.PronounceSlow, dynamicPronounceSlow.Value));
+                    }
+                    else if (dynamicKey is DynamicLog dynamicLog)
+                    {
+                        if (string.IsNullOrEmpty(dynamicLog.Value))
+                            Log.ErrorFormat("Text not found for {0} ", dynamicLog.Label);
+                        else
+                            commandList.Add(new KeyCommand(KeyCommands.Log, dynamicLog.Value));
+                    }
+                    else if (dynamicKey is DynamicAnswer dynamicAnswer)
+                    {
+                        if (string.IsNullOrEmpty(dynamicAnswer.Value))
+                            Log.ErrorFormat("Text not found for {0} ", dynamicAnswer.Label);
+                        else
+                            commandList.Add(new KeyCommand(KeyCommands.Answer, dynamicAnswer.Value));
+                    }
                     else if (dynamicKey is DynamicTypePhoneme dynamicTypePhoneme)
                     {
                         if (string.IsNullOrEmpty(dynamicTypePhoneme.Value))
@@ -839,7 +894,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                         if (!int.TryParse(dynamicWait.Value, out _))
                             Log.ErrorFormat("Could not parse wait {0} as int value", dynamicWait.Label);
                         else
-                            commandList.Add(new KeyCommand() { Name = KeyCommands.Wait, Value = dynamicWait.Value } );
+                            commandList.Add(new KeyCommand() { Name = KeyCommands.Wait, Value = dynamicWait.Value });
                     }
                     else if (dynamicKey is DynamicPlugin dynamicPlugin)
                     {
@@ -848,14 +903,19 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                         else if (string.IsNullOrWhiteSpace(dynamicPlugin.Method))
                             Log.ErrorFormat("Method not found for {0} ", dynamicPlugin.Label);
                         else
-                            commandList.Add(new KeyCommand() { Name = KeyCommands.Plugin, Value = dynamicPlugin.Name,
-                                Method = dynamicPlugin.Method, Argument = dynamicPlugin.Argument } );
+                            commandList.Add(new KeyCommand()
+                            {
+                                Name = KeyCommands.Plugin,
+                                Value = dynamicPlugin.Name,
+                                Method = dynamicPlugin.Method,
+                                Argument = dynamicPlugin.Argument
+                            });
                     }
                     else if (dynamicKey is DynamicLoop dynamicLoop)
                     {
                         var vReturn = AddCommandList(dynamicLoop, minKeyWidth, minKeyHeight);
                         if (vReturn != null && vReturn.Any())
-                            commandList.Add(new KeyCommand() { Name = KeyCommands.Loop, Value = dynamicLoop.Count.ToString(), LoopCommands = vReturn } );
+                            commandList.Add(new KeyCommand() { Name = KeyCommands.Loop, Value = dynamicLoop.Count.ToString(), LoopCommands = vReturn });
                         else
                             return null;
                     }
@@ -868,7 +928,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             return commandList;
         }
 
-        private void CreateDynamicKey(XmlDynamicKey xmlKey, KeyValue xmlKeyValue, int minKeyWidth, int minKeyHeight)
+        private Key CreateDynamicKey(XmlDynamicKey xmlKey, KeyValue xmlKeyValue, int minKeyWidth, int minKeyHeight)
         {
             // Add the core properties from XML to a new key
             var newKey = new Key { Value = xmlKeyValue };
@@ -880,7 +940,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 keyValueByGroup["ALL"].Add(xmlKeyValue);
 
             //add this item's KeyValue to each KeyGroup referenced in its definition
-            foreach (KeyGroup vKeyGroup in xmlKey.KeyGroups)
+            foreach (KeyGroup vKeyGroup in xmlKey.KeyGroups) // null
             {
                 if (!keyValueByGroup.ContainsKey(vKeyGroup.Value.ToUpper()))
                     keyValueByGroup.Add(vKeyGroup.Value.ToUpper(), new List<KeyValue> { xmlKeyValue });
@@ -1194,122 +1254,185 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                     }
                 }
             }
-            
-            PlaceKeyInPosition(newKey, xmlKey.Row, xmlKey.Col, xmlKey.Height, xmlKey.Width);
+            return newKey;            
         }
 
-        void AddOptionKey(string option, int column, bool correct)
+        static List<XmlDynamicKey> SplitSpeechCommands(string input)
         {
-            XmlKey xmlKey = new XmlKey();
-            xmlKey.Label = option;
-            xmlKey.Col = column;
+            // Split any IPA out and  create a list of `Say` and `Pronounce` commands
+            var commands = new List<XmlDynamicKey>();
 
-            //xmlKey.Symbol = ??            
+            var ipaPattern = @"\/([^\/]+)\/";
+            var nonIpaPattern = @"[^\/]+";
+
+            var matches = Regex.Matches(input, $"{ipaPattern}|{nonIpaPattern}");
+
+            foreach (Match match in matches)
+            {
+                if (Regex.IsMatch(match.Value, ipaPattern))
+                {
+                    var ipaContent = match.Groups[1].Value;
+                    foreach (var phoneme in ipaContent.Split(' '))
+                    {
+                        if (phoneme.EndsWith("ː") ||
+                            phoneme.EndsWith(":"))
+                            commands.Add(new DynamicPronounceSlow(phoneme));
+                        else
+                            commands.Add(new DynamicPronounce(phoneme));
+                    }
+                }
+                else
+                {
+                    commands.Add(new DynamicSay(match.Value));
+                }                
+                commands.Add(new DynamicWait(100));
+            }
+
+            return commands;
+        }
+
+
+
+        void AddQuestionKeys(Question question)
+        {
+            // Main prompt
+            {
+                XmlDynamicKey dynKey = new XmlDynamicKey();
+                dynKey.Label = "Sentence";
+                dynKey.Commands.AddRange(SplitSpeechCommands(question.Context));
+                dynKey.Commands.Add(new DynamicLog($"SLT: Played sentence prompt"));
+                dynKey.Row = 0;
+                dynKey.Col = 0;
+
+                Key newKey = AddDynamicKey(dynKey, 1, 1, "Q");
+                PlaceKeyInPosition(QuestionGrid, newKey,
+                                   dynKey.Row, dynKey.Col,
+                                   dynKey.Height, dynKey.Width);
+            }
+            // Repeat word 
+            {
+                XmlDynamicKey dynKey = new XmlDynamicKey();
+                dynKey.Label = "Word";
+                dynKey.Commands.AddRange(SplitSpeechCommands(question.Word));
+                dynKey.Commands.Add(new DynamicLog($"SLT: Played question word"));
+                dynKey.Row = 1;
+                dynKey.Col = 0;
+
+                Key newKey = AddDynamicKey(dynKey, 1, 1, "Q");
+                PlaceKeyInPosition(QuestionGrid, newKey,
+                                   dynKey.Row, dynKey.Col,
+                                   dynKey.Height, dynKey.Width);
+            }
+            // Hint
+            {
+                XmlDynamicKey dynKey = new XmlDynamicKey();
+                dynKey.Label = "Hint";
+                dynKey.Commands.AddRange(SplitSpeechCommands(question.Hint));
+                dynKey.Commands.Add(new DynamicLog($"SLT: Played hint"));
+                dynKey.Row = 3;
+                dynKey.Col = 0;
+
+                Key newKey = AddDynamicKey(dynKey, 1, 1, "Q");
+                PlaceKeyInPosition(QuestionGrid, newKey,
+                                   dynKey.Row, dynKey.Col,
+                                   dynKey.Height, dynKey.Width);
+            }
+        }
+
+        void AddAnswerKey(string option, int row, int column, bool correct, int rowspan=1, int colspan=1)
+        {
+            XmlDynamicKey dynKey = new XmlDynamicKey();
+
+            string symbol = PhonemeSymbols.GetValueOrDefault(option, (string)null);
+            if (String.IsNullOrEmpty(symbol))
+                dynKey.Label = option;
+            else
+                dynKey.Symbol = new XmlDynamicSymbol(symbol);
+
+            //FIXME: add colour appropriate (once Heather has confirmed layout)            
+
+            dynKey.Commands.Add(new DynamicLog($"SLT: Chose answer {option}"));
+            dynKey.Commands.Add(new DynamicAnswer(correct));
+
+            // FIXME: what do we do at quiz end? Toast? I think this happens
+            // via the `Answer` function key handling though
+
+            dynKey.Margin = "50";
+
+            dynKey.Row = row;
+            dynKey.Col = column;
+            dynKey.Width = colspan;
+            dynKey.Height = rowspan;
+
+            //fixme: we don't need all the logic in AddDynamicKey
+            // either extract to shared method, or simplify here
+            Key newKey = AddDynamicKey(dynKey, 1, 1, "A");
+            PlaceKeyInPosition(AnswersGrid, newKey, 
+                               dynKey.Row, dynKey.Col, 
+                               dynKey.Height, dynKey.Width);
+        }
+
+        void AddSoundKey(string option, int row, int column)
+        {
+            XmlDynamicKey dynKey = new XmlDynamicKey();
+            dynKey.Symbol = new XmlDynamicSymbol("SpeakIcon");
+            dynKey.ForegroundColor = "darkgray";
+            dynKey.Margin = "75";
             
-            Key newKey = CreateKeyWithBasicProps(xmlKey, 1, 1); // fixme replace with simpler
+            if (option.EndsWith("ː") || 
+                option.EndsWith(":")) // : request is ignored by synth engine
+                dynKey.Commands.Add(new DynamicPronounceSlow(option));
+            else
+                dynKey.Commands.Add(new DynamicPronounce(option));
+            dynKey.Commands.Add(new DynamicLog($"SLT: Sounded out {option}"));
 
-            // Add action: Log answer, correct or incorrect. 
+            dynKey.Row = row;
+            dynKey.Col = column;
+            //fixme: we don't need all the logic in AddDynamicKey
+            // either extract to shared method, or simplify here
+            Key newKey = AddDynamicKey(dynKey, 1, 1, "A");
+            PlaceKeyInPosition(AnswersGrid, newKey,
+                               dynKey.Row, dynKey.Col,
+                               dynKey.Height, dynKey.Width);
+        }
 
-            //if (xmlKey.Action.HasValue)
-            //{
-            //    newKey.Value = new KeyValue(xmlKey.Action.Value);
-            //}
-            //else
-            //{
-            //    Log.ErrorFormat("No FunctionKey found for key with label {0}", xmlKey.Label);
-            //}
-                        
-            PlaceKeyInPosition(newKey, 0, column);
+        private void SetupOverallQuiz()
+        {
+            // Main prompt & "next" button etc            
+
         }
 
         private void SetupKeys(Question question)
         {
-            AnswersGrid.RowDefinitions.Add(new RowDefinition());
+            /*
+             * QUESTIONS
+             */
 
-            //fixme: optionally shuffle answers?
-            int col = 0;
+            string imagePath = getValidFilepath(question.Image);
+            if (!String.IsNullOrEmpty(imagePath)) {
+                QuestionImage.Source = new BitmapImage(new Uri(imagePath, UriKind.Absolute));
+            }
+
+            AddQuestionKeys(question);
+
+            /* 
+             * ANSWERS
+             */
+            // Three columns - 2 | 1
+            for (int i=0; i <3; i++)
+                AnswersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            // In each column, 1 is an answer key, one is a "sound out" key            
+            int row = 0;
             foreach(string answer in question.Options)
             {
-                AnswersGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                AddOptionKey(answer, col++, answer == question.Answer);
+                AnswersGrid.RowDefinitions.Add(new RowDefinition());
+                
+                AddAnswerKey(answer, row, 0, answer == question.Answer, 1, 2);
+                AddSoundKey(answer, row++, 2);
             }            
         }
 
-        void AddActionKey(XmlActionKey xmlKey, int minKeyWidth, int minKeyHeight)
-        {
-            Key newKey = CreateKeyWithBasicProps(xmlKey, minKeyWidth, minKeyHeight);
-
-            if (xmlKey.Action.HasValue)
-            {
-                newKey.Value = new KeyValue(xmlKey.Action.Value);
-            }
-            else
-            {
-                Log.ErrorFormat("No FunctionKey found for key with label {0}", xmlKey.Label);
-            }
-
-            PlaceKeyInPosition(newKey, xmlKey.Row, xmlKey.Col, xmlKey.Height, xmlKey.Width);
-        }
-
-        void AddChangeKeyboardKey(XmlChangeKeyboardKey xmlKey, int minKeyWidth, int minKeyHeight)
-        {
-            Key newKey = CreateKeyWithBasicProps(xmlKey, minKeyWidth, minKeyHeight);
-
-            if (xmlKey.DestinationKeyboard != null)
-            {
-                var rootDir = Path.GetDirectoryName(inputFilename);
-                bool replaceCurrKeyboard = !xmlKey.ReturnToThisKeyboard;
-                newKey.Value = Enum.TryParse(xmlKey.DestinationKeyboard, out Enums.Keyboards keyboardEnum)
-                    ? new ChangeKeyboardKeyValue(keyboardEnum, replaceCurrKeyboard)
-                    : new ChangeKeyboardKeyValue(Path.Combine(rootDir, xmlKey.DestinationKeyboard), replaceCurrKeyboard);
-            }
-            else
-            {
-                Log.ErrorFormat("No destination keyboard found for changekeyboard key with label {0}", xmlKey.Label);
-            }
-
-            PlaceKeyInPosition(newKey, xmlKey.Row, xmlKey.Col, xmlKey.Height, xmlKey.Width);
-        }
-        
-        void AddPluginKey(XmlPluginKey xmlKey, int minKeyWidth, int minKeyHeight)
-        {
-            Key newKey = CreateKeyWithBasicProps(xmlKey, minKeyWidth, minKeyHeight);
-
-            if (xmlKey.Plugin != null && xmlKey.Method != null)
-            {
-                // FIXME: Saving the XML of the xmlKey itself probably is not the best option. It is done this way to avoid messing with
-                // other pieces of code deep within OptiKey.
-                XmlSerializer xmlSer = new XmlSerializer(typeof(XmlPluginKey));
-                using (var sww = new StringWriter())
-                {
-                    XmlTextWriter writer = new XmlTextWriter(sww) { Formatting = System.Xml.Formatting.Indented };
-                    xmlSer.Serialize(writer, xmlKey);
-                    newKey.Value = new KeyValue(FunctionKeys.Plugin, sww.ToString());
-                }
-            }
-            else
-            {
-                Log.ErrorFormat("Incomplete plugin key configuration in key {0}", xmlKey.Label ?? xmlKey.Symbol.Value);
-            }
-
-            PlaceKeyInPosition(newKey, xmlKey.Row, xmlKey.Col, xmlKey.Height, xmlKey.Width);
-        }
-
-        void AddTextKey(XmlTextKey xmlKey, int minKeyWidth, int minKeyHeight)
-        {
-            Key newKey = CreateKeyWithBasicProps(xmlKey, minKeyWidth, minKeyHeight);
-
-            if (xmlKey.Text != null)
-            {
-                newKey.Value = new KeyValue(xmlKey.Text);
-            }
-            else
-            {
-                Log.ErrorFormat("No value found in text key with label {0}", xmlKey.Label);
-            }
-
-            PlaceKeyInPosition(newKey, xmlKey.Row, xmlKey.Col, xmlKey.Height, xmlKey.Width);
-        }
 
         private void SetupStyle()
         {
