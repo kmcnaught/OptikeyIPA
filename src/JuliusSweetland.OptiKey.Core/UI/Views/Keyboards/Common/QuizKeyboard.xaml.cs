@@ -1394,7 +1394,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             // FIXME: what do we do at quiz end? Toast? I think this happens
             // via the `Answer` function key handling though
 
-            dynKey.Margin = "120";
+            dynKey.Margin = "70";
 
             dynKey.Row = row;
             dynKey.Col = column;
@@ -1414,7 +1414,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             XmlDynamicKey dynKey = new XmlDynamicKey();
             dynKey.Symbol = new XmlDynamicSymbol("SpeakIcon");
             dynKey.ForegroundColor = "darkgray";
-            dynKey.Margin = "150";
+            dynKey.Margin = "100";
             
             if (option.EndsWith("ː") || 
                 option.EndsWith(":")) // : request is ignored by synth engine
