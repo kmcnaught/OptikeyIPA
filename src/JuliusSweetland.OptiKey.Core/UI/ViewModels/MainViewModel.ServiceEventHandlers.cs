@@ -2520,6 +2520,7 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                 case FunctionKeys.Log:
                     //fixme: create separate logging for quiz
                     Log.Info(singleKeyValue.String);
+                    QuizLog.Log(singleKeyValue.String);
                     break;
 
                 case FunctionKeys.TypeLastPhoneme:

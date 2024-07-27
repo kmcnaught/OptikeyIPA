@@ -28,6 +28,7 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
         #region Fields
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private FileLogger QuizLog;
 
         private readonly IAudioService audioService;
         private readonly ICalibrationService calibrationService;
@@ -100,6 +101,12 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
             this.mouseOutputService = mouseOutputService;
             this.mainWindowManipulationService = mainWindowManipulationService;
             this.errorNotifyingServices = errorNotifyingServices;
+
+            string filename = $"file_{DateTime.Now:yy-MM-dd_HH-mm-ss}.txt";
+            string logFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
+                                              "Optikey", 
+                                              "quiz_log.txt");
+            QuizLog = new FileLogger(logFilePath);
 
             calibrateRequest = new InteractionRequest<NotificationWithCalibrationResult>();
             SelectionMode = SelectionModes.Keys;
