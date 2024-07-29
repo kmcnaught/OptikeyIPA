@@ -118,6 +118,14 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             { "ŋ", "images/sing.jpg" }
         };
 
+        public static Dictionary<string, string> PhonemeLabels = new Dictionary<string, string>
+        {
+            { "ɛ", "e" },
+            { "ʌ", "u" },
+            { "ɪ", "i" },
+            { "ɒ", "o" },
+            { "æ", "a" },
+        };
         private void SetupWindow()
         {
             // If the keyboard overrides any size/position values, tell the windowsManipulationService that it shouldn't be persisting state changes
@@ -1377,7 +1385,13 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             string symbol = PhonemeSymbols.GetValueOrDefault(option, (string)null);
             if (String.IsNullOrEmpty(symbol))
-                dynKey.Label = option;
+            {
+                string altLabel = PhonemeLabels.GetValueOrDefault(option, (string)null);
+                if (String.IsNullOrEmpty(altLabel))
+                    dynKey.Label = option;
+                else
+                    dynKey.Label = altLabel;
+            }
             else
                 dynKey.Symbol = new XmlDynamicSymbol(symbol);
 
