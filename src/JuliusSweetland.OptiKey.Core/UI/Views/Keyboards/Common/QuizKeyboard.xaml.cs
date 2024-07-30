@@ -1405,7 +1405,8 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             //FIXME: add colour appropriate (once Heather has confirmed layout)            
 
-            dynKey.Commands.Add(new DynamicLog($"SLT: Chose answer {option}"));
+            string correctness = correct ? "correct" : "incorrect";
+            dynKey.Commands.Add(new DynamicLog($"SLT: Chose { correctness } answer {option}"));
             if (option.EndsWith("ː") ||
                 option.EndsWith(":")) // : request is ignored by synth engine
                 dynKey.Commands.Add(new DynamicPronounceSlow(option));

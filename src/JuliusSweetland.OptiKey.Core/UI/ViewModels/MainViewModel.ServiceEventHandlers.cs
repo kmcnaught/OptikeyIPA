@@ -3057,6 +3057,8 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     {
                         //fixme: create separate logging for quiz
                         Log.Info(keyCommand.Value);
+                        QuizLog.Log(keyCommand.Value);
+
                     }
                     else if (keyCommand.Name == KeyCommands.TypePhoneme)
                     {
@@ -3076,6 +3078,7 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                         Log.InfoFormat("CommandList: Plugin [{0}]", keyCommand.Value);
                         RunDynamicPlugin(keyCommand);
                     }
+                    //fixme: else process function key as per normal?? 
                 }
             }
         }

@@ -102,10 +102,9 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
             this.mainWindowManipulationService = mainWindowManipulationService;
             this.errorNotifyingServices = errorNotifyingServices;
 
-            string filename = $"file_{DateTime.Now:yy-MM-dd_HH-mm-ss}.txt";
+            string filename = $"quiz_{DateTime.Now:yy-MM-dd_HH-mm-ss}.txt";
             string logFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
-                                              "Optikey", 
-                                              "quiz_log.txt");
+                                              "Optikey", filename);
             QuizLog = new FileLogger(logFilePath);
 
             calibrateRequest = new InteractionRequest<NotificationWithCalibrationResult>();
