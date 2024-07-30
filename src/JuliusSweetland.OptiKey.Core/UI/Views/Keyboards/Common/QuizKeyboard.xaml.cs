@@ -1421,7 +1421,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             // FIXME: what do we do at quiz end? Toast? I think this happens
             // via the `Answer` function key handling though
 
-            dynKey.Margin = "70";
+            //dynKey.Margin = "70";
 
             dynKey.Row = row;
             dynKey.Col = column;
@@ -1441,7 +1441,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             XmlDynamicKey dynKey = new XmlDynamicKey();
             dynKey.Symbol = new XmlDynamicSymbol("SpeakIcon");
             dynKey.ForegroundColor = "darkgray";
-            dynKey.Margin = "100";
+            //dynKey.Margin = "100";
             
             if (option.EndsWith("ː") || 
                 option.EndsWith(":")) // : request is ignored by synth engine
@@ -1495,14 +1495,17 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
              * ANSWERS
              */
             // Three columns - 2 | 1
-            for (int i=0; i <3; i++)
+            for (int i=0; i < 5; i++)
                 AnswersGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
+            AnswersGrid.RowDefinitions.Add(new RowDefinition());
+
             // In each column, 1 is an answer key, one is a "sound out" key            
-            int row = 0;
+            int row = 1;
             foreach (string answer in question.Options)
             {
                 // Add a new row definition
+                AnswersGrid.RowDefinitions.Add(new RowDefinition());
                 AnswersGrid.RowDefinitions.Add(new RowDefinition());
 
                 // Create a new Border for the row
@@ -1514,14 +1517,16 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
                 // Set the Grid.Row property to place the border in the correct row
                 Grid.SetRow(rowBorder, row);
-                Grid.SetColumnSpan(rowBorder, 3); // Assuming you want the border to span all columns
+                Grid.SetColumnSpan(rowBorder, 5); 
 
                 // Add the Border to the Grid
                 AnswersGrid.Children.Add(rowBorder);
 
                 // Add your answer key and sound key
-                AddAnswerKey(answer, row, 0, answer == question.Answer, question.Word, 1, 2);
-                AddSoundKey(answer, row++, 2);
+                AddAnswerKey(answer, row, 1, answer == question.Answer, question.Word);
+                AddSoundKey(answer, row, 3);
+
+                row += 2;
             }
         }
 
