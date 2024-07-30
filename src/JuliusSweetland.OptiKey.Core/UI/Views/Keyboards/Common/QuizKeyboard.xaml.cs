@@ -88,7 +88,8 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             SetupOverallQuiz();
 
-            // Customise for this current question      
+            // Customise for this current question    
+            QuizState.TotalQuestions = quiz.Questions.Count;
             int q = Math.Min(QuizState.QuestionNumber, quiz.Questions.Count-1); //if end, do sth different
             Question question = quiz.Questions[q];
             SetupKeys(question);
@@ -915,12 +916,19 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                         else
                             commandList.Add(new KeyCommand(KeyCommands.Log, dynamicLog.Value));
                     }
-                    else if (dynamicKey is DynamicAnswer dynamicAnswer)
+                    else if (dynamicKey is DynamicAnswerIncorrect dynamicAnswer)
                     {
                         if (string.IsNullOrEmpty(dynamicAnswer.Value))
                             Log.ErrorFormat("Text not found for {0} ", dynamicAnswer.Label);
                         else
-                            commandList.Add(new KeyCommand(KeyCommands.Answer, dynamicAnswer.Value));
+                            commandList.Add(new KeyCommand(KeyCommands.AnswerIncorrect, dynamicAnswer.Value));
+                    }
+                    else if (dynamicKey is DynamicAnswerCorrect dynamicAnswer2)
+                    {
+                        if (string.IsNullOrEmpty(dynamicAnswer2.Value))
+                            Log.ErrorFormat("Text not found for {0} ", dynamicAnswer2.Label);
+                        else
+                            commandList.Add(new KeyCommand(KeyCommands.AnswerCorrect, dynamicAnswer2.Value));
                     }
                     else if (dynamicKey is DynamicTypePhoneme dynamicTypePhoneme)
                     {
@@ -1341,7 +1349,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 dynKey.Label = "Sentence";
                 dynKey.Commands.AddRange(SplitSpeechCommands(question.Context));
                 dynKey.Commands.Add(new DynamicLog($"SLT: Played sentence prompt"));
-                dynKey.Row = 0;
+                dynKey.Row = 2;
                 dynKey.Col = 0;
 
                 Key newKey = AddDynamicKey(dynKey, 1, 1, "Q");
@@ -1379,7 +1387,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             }*/
         }
 
-        void AddAnswerKey(string option, int row, int column, bool correct, int rowspan=1, int colspan=1)
+        void AddAnswerKey(string option, int row, int column, bool correct, string hint, int rowspan=1, int colspan=1)
         {
             XmlDynamicKey dynKey = new XmlDynamicKey();
 
@@ -1403,7 +1411,11 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 dynKey.Commands.Add(new DynamicPronounceSlow(option));
             else
                 dynKey.Commands.Add(new DynamicPronounce(option));
-            dynKey.Commands.Add(new DynamicAnswer(correct));
+
+            if (correct)
+                dynKey.Commands.Add(new DynamicAnswerCorrect(hint));
+            else
+                dynKey.Commands.Add(new DynamicAnswerIncorrect(hint));
 
             // FIXME: what do we do at quiz end? Toast? I think this happens
             // via the `Answer` function key handling though
@@ -1473,7 +1485,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             string imagePath = getValidFilepath(question.Image);
             if (!String.IsNullOrEmpty(imagePath)) {
-                QuestionImage.Source = new BitmapImage(new Uri(imagePath, UriKind.Absolute));
+                //QuestionImage.Source = new BitmapImage(new Uri(imagePath, UriKind.Absolute));
             }
 
             AddQuestionKeys(question);
@@ -1507,7 +1519,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 AnswersGrid.Children.Add(rowBorder);
 
                 // Add your answer key and sound key
-                AddAnswerKey(answer, row, 0, answer == question.Answer, 1, 2);
+                AddAnswerKey(answer, row, 0, answer == question.Answer, question.Word, 1, 2);
                 AddSoundKey(answer, row++, 2);
             }
         }

@@ -61,12 +61,12 @@ Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserve
                               Margin="50"
                       Value="{x:Static models:KeyValues.BackFromKeyboardKey}"/>
                 
-                <controls:Key Grid.Row="0" Grid.Column="2"
+                <!--<controls:Key Grid.Row="0" Grid.Column="2"
                       SymbolGeometry="{StaticResource ArrowPointingToRightIcon}"  
                       Text="{x:Static resx:Resources.NEXT}"
                       SharedSizeGroup="KeyWithSymbol"
                               Margin="50"
-                      Value="{x:Static models:KeyValues.QuizNextQuestionKey}"/>
+                      Value="{x:Static models:KeyValues.QuizNextQuestionKey}"/>-->
             </Grid>
 
             <!-- todo: bind visibilities so they collapse if value / source is null -->
@@ -77,7 +77,8 @@ Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserve
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                    <!--<RowDefinition Height="2*"/>-->
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -86,7 +87,7 @@ Copyright (c) 2022 OPTIKEY LTD (UK company number 11854839) - All Rights Reserve
 
                 <!--<controls:Key x:Name="QuestionWordKey" Value="a" SymbolGeometry="{StaticResource SpeakIcon}" Grid.Row="0"/>
                 <controls:Key x:Name="QuestionContextKey" Value="a" Grid.Row="1"/>-->
-                <Image x:Name="QuestionImage" Grid.Row="2"/>
+                <!--<Image x:Name="QuestionImage" Grid.Row="2"/>-->
             </Grid>
 
              <Grid Grid.IsSharedSizeScope="True" x:Name="AnswersGrid" 

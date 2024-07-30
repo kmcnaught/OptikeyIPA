@@ -10,5 +10,6 @@ namespace JuliusSweetland.OptiKey.Models.Quizzes
     public static class QuizState
     {
         public static int QuestionNumber = 0;
+        public static int TotalQuestions = 0;
     }
 }

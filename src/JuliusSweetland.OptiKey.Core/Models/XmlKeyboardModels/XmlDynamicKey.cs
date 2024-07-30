@@ -23,7 +23,8 @@ namespace JuliusSweetland.OptiKey.Models
         [XmlElement("MoveWindow", typeof(DynamicMove))]
         [XmlElement("Text", typeof(DynamicText))]
         [XmlElement("Wait", typeof(DynamicWait))]
-        [XmlElement("CorrectAnswer", typeof(DynamicAnswer))]
+        [XmlElement("AnswerCorrect", typeof(DynamicAnswerCorrect))]
+        [XmlElement("AnswerIncorrect", typeof(DynamicAnswerIncorrect))]
         public List<XmlDynamicKey> Commands { get; } = new List<XmlDynamicKey>();
         
         public string Label { get; set; } //Either set this, the Symbol, or both. This value become the Text value on the created Key.
@@ -191,15 +192,26 @@ namespace JuliusSweetland.OptiKey.Models
         public string Value { get; set; }
     }
 
-    public class DynamicAnswer : XmlDynamicKey
+    public class DynamicAnswerCorrect : XmlDynamicKey
     {
-        public DynamicAnswer() { }
-        public DynamicAnswer(bool isCorrect)
+        public DynamicAnswerCorrect() { }
+        public DynamicAnswerCorrect(string hint)
         {
-            Value = isCorrect ? "true" : "false";
+            Value = hint;
         }
 
-        //fixme: maybe an actual bool underlying it?
+        [XmlText]
+        public string Value { get; set; }
+    }
+
+    public class DynamicAnswerIncorrect : XmlDynamicKey
+    {
+        public DynamicAnswerIncorrect() { }
+        public DynamicAnswerIncorrect(string hint)
+        {
+            Value = hint;
+        }
+
         [XmlText]
         public string Value { get; set; }
     }

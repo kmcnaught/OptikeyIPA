@@ -818,6 +818,7 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
 
                 case FunctionKeys.QuizStart:
 
+                    QuizState.QuestionNumber = 0;
                     Action backAction = () =>
                     {
                         mainWindowManipulationService.ResizeDockToFull();
@@ -2643,29 +2644,37 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     RaiseToastNotification("Success", "Reset dictionary to\nEnglish (UK)", NotificationTypes.Normal, () => inputService.RequestResume());
                     break;
 
-                case FunctionKeys.QuizNextQuestion:
+                case FunctionKeys.QuizNextQuestion:                    
+
                     QuizState.QuestionNumber++; // yes we get here okay
 
-                    var quizKeyboard = Keyboard as QuizKeyboard;
-
-
-                    // HACK: go back so forced to re-enter
-                    // (in future use something like the Dyn..Key..Selector page indices instead)
-                    //Log.Info("Navigating back from keyboard.");
-                    //var navigableKeyboard2 = Keyboard as IBackAction;
-                    //if (navigableKeyboard2 != null && navigableKeyboard2.BackAction != null)
-                    //{
-                    //    navigableKeyboard2.BackAction();
-                    //}
-
-                    // HACK: create a dyn keyboard to force re-create
-                    if (quizKeyboard != null)
+                    if (QuizState.QuestionNumber >= QuizState.TotalQuestions)
                     {
-                        DynamicKeyboard newDynKeyboard = new QuizKeyboard(quizKeyboard.BackAction, keyStateService,
-                                                            quizKeyboard.Link, null);
-                        Keyboard = newDynKeyboard;
+                        inputService.RequestSuspend();
+                        RaiseToastNotification("Finished", "Congratulations, the quiz is complete", NotificationTypes.Normal, () => inputService.RequestResume());
                     }
+                    else
+                    {
 
+                        var quizKeyboard = Keyboard as QuizKeyboard;
+
+                        // HACK: go back so forced to re-enter
+                        // (in future use something like the Dyn..Key..Selector page indices instead)
+                        //Log.Info("Navigating back from keyboard.");
+                        //var navigableKeyboard2 = Keyboard as IBackAction;
+                        //if (navigableKeyboard2 != null && navigableKeyboard2.BackAction != null)
+                        //{
+                        //    navigableKeyboard2.BackAction();
+                        //}
+
+                        // HACK: create a dyn keyboard to force re-create
+                        if (quizKeyboard != null)
+                        {
+                            DynamicKeyboard newDynKeyboard = new QuizKeyboard(quizKeyboard.BackAction, keyStateService,
+                                                                quizKeyboard.Link, null);
+                            Keyboard = newDynKeyboard;
+                        }
+                    }
                    
                     break;
 
@@ -3025,13 +3034,21 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                         true,
                         keyCommand.Name == KeyCommands.PronounceSlow);
                     }
-                    else if (keyCommand.Name == KeyCommands.Answer)
+                    else if (keyCommand.Name == KeyCommands.AnswerCorrect)
                     {
-                        bool correct = Convert.ToBoolean(keyCommand.Value);
-                        string correctString = correct ? "CORRECT" : "INCORRECT";
-                        Log.Info($"Answer is {correctString}");
-                        string message = correct ? "Correct. Hooray!" : "Sorry, try again";
-                        string title = correct ? Resources.SUCCESS : "";
+                        string title = keyCommand.Value; // show hint / correct spelling
+                        string message = "Correct. Hooray!";
+                        inputService.RequestSuspend();
+                        RaiseToastNotification(title, message, NotificationTypes.Normal, () => inputService.RequestResume());
+                        // FIXME: could move quiz on here, or play hint, etc. 
+
+                        HandleFunctionKeySelectionResult(new KeyValue(FunctionKeys.QuizNextQuestion));
+                    }
+                    else if (keyCommand.Name == KeyCommands.AnswerIncorrect)
+                    {
+                        //string title = keyCommand.Value; // show hint / correct spelling
+                        string title = "";
+                        string message = "Sorry, try again";
                         inputService.RequestSuspend();
                         RaiseToastNotification(title, message, NotificationTypes.Normal, () => inputService.RequestResume());
                         // FIXME: could move quiz on here, or play hint, etc. 
