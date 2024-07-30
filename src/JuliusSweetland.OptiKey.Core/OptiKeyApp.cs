@@ -345,7 +345,6 @@ namespace JuliusSweetland.OptiKey
             }
         }
 
-
         #region Create Main Window Manipulation Service
 
         protected WindowManipulationService CreateMainWindowManipulationService(MainWindow mainWindow)
@@ -919,6 +918,7 @@ namespace JuliusSweetland.OptiKey
         {
             var taskCompletionSource = new TaskCompletionSource<bool>(); //Used to make this method awaitable on the InteractionRequest callback
 
+            Settings.Default.ShowSplashScreen = false;
             if (Settings.Default.ShowSplashScreen)
             {
                 Log.Info("Showing splash screen.");
