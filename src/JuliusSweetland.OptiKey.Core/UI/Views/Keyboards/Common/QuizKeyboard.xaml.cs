@@ -122,7 +122,8 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
         public static Dictionary<string, string> PhonemeLabels = new Dictionary<string, string>
         {
             { "ɛ", "e" },
-            { "ʌ", "u" },
+            { "ʌ", "u (ʌ)" },
+            { "ʊ", "u (ʊ)" },
             { "ɪ", "i" },
             { "ɒ", "o" },
             { "æ", "a" },
