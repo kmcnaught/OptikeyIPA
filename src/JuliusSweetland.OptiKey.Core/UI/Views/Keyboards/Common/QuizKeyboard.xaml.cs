@@ -116,18 +116,81 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             { "ʒ", "images/measure.png" },
             { "ʃ", "images/shhh.png" },
             { "t͡ʃ", "images/chair.png" },
-            { "ŋ", "images/sing.jpg" }
+            { "ŋ", "images/sing.jpg" },
+            { "ʊ", "images/book2.png" },
         };
 
         public static Dictionary<string, string> PhonemeLabels = new Dictionary<string, string>
         {
             { "ɛ", "e" },
-            { "ʌ", "u (ʌ)" },
-            { "ʊ", "u (ʊ)" },
+            { "ʌ", "u" },
+            //{ "ʊ", "ʊ" },
             { "ɪ", "i" },
             { "ɒ", "o" },
             { "æ", "a" },
         };
+
+        public static Dictionary<string, string> ColourGroups = new Dictionary<string, string>
+        {
+            { "iː", "longvowels" },
+            { "ɪə", "diphthongs" },
+            { "ʊə", "diphthongs" },
+            { "ɪʊ", "diphthongs" },
+            { "ɔɪ", "diphthongs" },
+            { "əʊ", "diphthongs" },
+            { "aʊ", "diphthongs" },
+            { "uː", "longvowels" },
+            { "kw", "consonants" },
+            { "w", "consonants" },
+            { "ɛ", "shortvowels" },
+            { "r", "consonants" },
+            { "t", "consonants" },
+            { "j", "consonants" },
+            { "ʌ", "shortvowels" },
+            { "ɪ", "shortvowels" },
+            { "ɒ", "shortvowels" },
+            { "p", "consonants" },
+            { "ɑː", "longvowels" },
+            { "eɪ", "diphthongs" },
+            { "eə", "longvowels" },
+            { "ɜ", "longvowels" },
+            { "ð", "consonants2" },
+            { "θ", "consonants2" },
+            { "ʊ", "shortvowels" },
+            { "aɪ", "diphthongs" },
+            { "ɔː", "longvowels" },
+            { "æ", "shortvowels" },
+            { "s", "consonants" },
+            { "d", "consonants" },
+            { "f", "consonants" },
+            { "ɡ", "consonants" },
+            { "h", "consonants" },
+            { "dʒ", "consonants" },
+            { "k", "consonants" },
+            { "l", "consonants" },
+            { "ə", "shortvowels" },
+            { "ʒ", "consonants2" },
+            { "ʃ", "consonants2" },
+            { "t͡ʃ", "consonants2" },
+            { "ŋ", "consonants2" },
+            { "z", "consonants" },
+            { "ks", "consonants" },
+            { "v", "consonants" },
+            { "b", "consonants" },
+            { "n", "consonants" },
+            { "m", "consonants" }
+        };
+
+        public static Dictionary<string, string> Colours = new Dictionary<string, string>
+        {
+            { "longvowels", "#A1DC7A" },
+            { "shortvowels", "#ACDFE1" },
+            { "diphthongs", "#fcd668" },
+            { "consonants", "#E18676" },
+            { "consonants2", "#C05D54" }
+        };
+
+
         private void SetupWindow()
         {
             // If the keyboard overrides any size/position values, tell the windowsManipulationService that it shouldn't be persisting state changes
@@ -1403,6 +1466,17 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             }
             else
                 dynKey.Symbol = new XmlDynamicSymbol(symbol);
+
+            string colourGroup = ColourGroups.GetValueOrDefault(option, (string)null);
+            if (!String.IsNullOrEmpty(colourGroup))
+            {
+                string colour = Colours.GetValueOrDefault(colourGroup, (string)null);
+                if (!String.IsNullOrEmpty(colourGroup))
+                {
+                    dynKey.BackgroundColor = colour;
+                    dynKey.ForegroundColor = "#1C1D1E";
+                }
+            }
 
             //FIXME: add colour appropriate (once Heather has confirmed layout)            
 
