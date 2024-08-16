@@ -118,6 +118,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             { "t͡ʃ", "images/chair.png" },
             { "ŋ", "images/sing.jpg" },
             { "ʊ", "images/book2.png" },
+            { "ə", "images/the.png" },
         };
 
         public static Dictionary<string, string> PhonemeLabels = new Dictionary<string, string>
@@ -178,7 +179,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             { "v", "consonants" },
             { "b", "consonants" },
             { "n", "consonants" },
-            { "m", "consonants" }
+            { "m", "consonants" },
         };
 
         public static Dictionary<string, string> Colours = new Dictionary<string, string>
