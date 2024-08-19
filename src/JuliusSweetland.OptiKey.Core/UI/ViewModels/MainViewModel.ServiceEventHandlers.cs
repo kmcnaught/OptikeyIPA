@@ -825,6 +825,14 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                         Keyboard = currentKeyboard;
                     };
 
+                    // Set up new quiz log
+                    var quizFile = singleKeyValue.String;
+                    var quizDirectory = new FileInfo(quizFile).Directory.FullName;
+
+                    string filename = $"quiz_{DateTime.Now:yy-MM-dd_HH-mm-ss}.txt";
+                    string logFilePath = Path.Combine(quizDirectory, filename);
+                    QuizLog = new FileLogger(logFilePath);
+                    
                     DynamicKeyboard newDynKeyboard = new QuizKeyboard(backAction, keyStateService,
                     singleKeyValue.String, null);
                     Keyboard = newDynKeyboard;

@@ -22,7 +22,7 @@ namespace JuliusSweetland.OptiKey.Models
             {
                 using (StreamWriter writer = new StreamWriter(_filePath, true))
                 {
-                    writer.WriteLine($"{DateTime.Now}: {message}");
+                    writer.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}: {message}");
                 }
             }
             catch (Exception ex)
