@@ -93,6 +93,8 @@
     <Compile Include="Extensions\PointExtensionsTests.cs" />
     <Compile Include="Extensions\KeyDownStatesExtensionsTests.cs" />
     <Compile Include="Extensions\DoubleExtensionsTests.cs" />
+    <Compile Include="Phonemics\IPAMappingTests.cs" />
+    <Compile Include="Phonemics\LevenshteinTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\CharExtensionsTests.cs" />
     <Compile Include="Services\AutoComplete\AutoCompleteTestsBase.cs" />

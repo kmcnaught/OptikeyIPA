@@ -440,6 +440,12 @@
     <Compile Include="Services\MouseOutputService.cs" />
     <Compile Include="Services\PointSources\MyGazePointService.cs" />
     <Compile Include="Services\PointSources\MyGazeCalibrationService.cs" />
+    <Compile Include="Services\Suggestions\Phonemics\ICharacterSubstitution.cs" />
+    <Compile Include="Services\Suggestions\Phonemics\IPAMappings.cs" />
+    <Compile Include="Services\Suggestions\Phonemics\LevenshteinResult.cs" />
+    <Compile Include="Services\Suggestions\Phonemics\PhonemicDistance.cs" />
+    <Compile Include="Services\Suggestions\Phonemics\PhoneticCharacterSubstitution.cs" />
+    <Compile Include="Services\Suggestions\Phonemics\WeightedLevenshtein.cs" />
     <Compile Include="Services\Suggestions\PresageSuggestions.cs" />
     <Compile Include="Services\PointSources\IrisbondDuoCalibrationService.cs" />
     <Compile Include="Services\PointSources\TobiiEyeXCalibrationService.cs" />
