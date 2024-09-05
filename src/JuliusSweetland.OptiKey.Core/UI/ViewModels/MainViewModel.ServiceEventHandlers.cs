@@ -2685,14 +2685,25 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     if (SpellingQuizLoaded != null)
                     {
                         SpellingQuizLoaded.MoveToNextQuestion();
+
+                        // go back from results page
+                        var navigableKeyboard2 = Keyboard as IBackAction;
+                        if (navigableKeyboard2 != null && navigableKeyboard2.BackAction != null)
+                        {
+                            navigableKeyboard2.BackAction();
+                        }
                     }
                     break;
 
                 case FunctionKeys.SpellingQuizSubmit:
-                    //fixme: maybe just log and move on, maybe launch feedback UI
+
                     if (SpellingQuizLoaded != null)
                     {
-                        SpellingQuizLoaded.MoveToNextQuestion();
+                        // Go to results page...
+                        string textFromScratchpad = KeyboardOutputService.Text;
+                        SpellingResultKeyboard resKeyboard = new SpellingResultKeyboard(CreateBackAction(), keyStateService,
+                            SpellingQuizLoaded.ScoreAnswer(textFromScratchpad), null);
+                        Keyboard = resKeyboard;
                     }
                     break;
 

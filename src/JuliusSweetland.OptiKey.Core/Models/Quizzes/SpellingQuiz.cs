@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using JuliusSweetland.OptiKey.Services.Suggestions.Phonemics;
 using Newtonsoft.Json;
 
 namespace JuliusSweetland.OptiKey.Models.Quizzes
@@ -33,6 +34,14 @@ namespace JuliusSweetland.OptiKey.Models.Quizzes
                 return Questions[CurrentQuestionIndex];
             }
             return null;
+        }
+
+        public LevenshteinResult ScoreAnswer(string answer)
+        {
+            var D = new PhonemicDistance();
+            ValidIPA ipaGuess = new ValidIPA(answer);
+            ValidIPA ipaCorrectAnswer = new ValidIPA(GetCurrentQuestion().Answer);
+            return D.Distance(ipaGuess, ipaCorrectAnswer);
         }
 
         public void MoveToNextQuestion()

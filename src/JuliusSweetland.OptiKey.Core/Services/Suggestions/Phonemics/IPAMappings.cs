@@ -74,6 +74,11 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
     {
         public string Value { get; }
 
+        public OneCharacterIPA(char singleChar)
+        {
+            Value = singleChar.ToString();
+        }
+
         public OneCharacterIPA(ValidIPA ipaValue)
         {
             StringBuilder mappedWord = new StringBuilder();

@@ -303,6 +303,7 @@ namespace JuliusSweetland.OptiKey.Models
         public static readonly KeyValue YesQuestionResultKey = new KeyValue(FunctionKeys.YesQuestionResult);
         public static readonly KeyValue QuizNextQuestionKey = new KeyValue(FunctionKeys.QuizNextQuestion);
 
+        public static readonly KeyValue SpellingQuizNextQuestionKey = new KeyValue(FunctionKeys.SpellingQuizNext);
 
         private static readonly Dictionary<Languages, List<KeyValue>> multiKeySelectionKeys;
 
