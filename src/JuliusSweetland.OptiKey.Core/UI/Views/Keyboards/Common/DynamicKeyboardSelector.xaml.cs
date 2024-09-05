@@ -71,12 +71,12 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 newKey.Text = JuliusSweetland.OptiKey.Properties.Resources.MENU;
                 newKey.Value = KeyValues.MenuKeyboardKey;
                 this.AddKey(newKey, this.mRows - 1, this.mCols - 1);
-            }            
+            }
 
             // Sleep key for bottom left
             {
                 Key newKey = new Key();
-                newKey.SymbolGeometry = (Geometry)this.Resources["SleepIcon"];                
+                newKey.SymbolGeometry = (Geometry)this.Resources["SleepIcon"];
                 newKey.Text = JuliusSweetland.OptiKey.Properties.Resources.SLEEP;
                 newKey.Value = KeyValues.SleepKey;
                 this.AddKey(newKey, this.mRows - 1, 0);
@@ -89,7 +89,18 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             int nKBs = Math.Min(remainingKeyboards, maxKeyboardsPerPage);
             int firstKB = maxKeyboardsPerPage * pageIndex;
 
-            if (totalNumKeyboards > 0)
+            // Look for quiz/spelling tests to append
+            string quizzesFolderPath = Path.Combine(keyboardsPath, "quizzes");
+            var quizFiles = Directory.GetFiles(quizzesFolderPath, "quiz*.json");
+            var spellingFiles = Directory.GetFiles(quizzesFolderPath, "spelling*.json");
+            string quizFile = null;
+            string spellingFile = null;
+            if (Directory.Exists(quizzesFolderPath)) { 
+                quizFile = quizFiles.Count() > 0 ? quizFiles[0] : null;
+                spellingFile = spellingFiles.Count() > 0 ? spellingFiles[0] : null;
+            }
+
+            if (totalNumKeyboards > 0 || quizFile != null || spellingFile != null)
             {
                 for (int i = 0; i < maxKeyboardsPerPage; i++)
                 {
@@ -102,26 +113,17 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                         // Add key to link to keyboard
                         this.AddKeyboardKey(kbInfo, r, c);
                     }
-                    else if (i == nKBs) // quiz key if present
+                    else if (i == nKBs && quizFile != null) // quiz key if present
                     {
-                        bool addedQuizKey = false;
-                        string quizzesFolderPath = Path.Combine(keyboardsPath, "quizzes");
-                        if (Directory.Exists(quizzesFolderPath))
-                        {
-                            var jsonFiles = Directory.GetFiles(quizzesFolderPath, "*.json");
-
-                            if (jsonFiles.Length > 0)
-                            {
-                                // For now just take first JSON
-                                // In future support multiple?                                
-                                this.AddQuizKey(jsonFiles[0], r, c);
-                                addedQuizKey = true;
-                            }
-                        }
-                        if (!addedQuizKey)
-                        {
-                            this.AddKey(new Key(), r, c);
-                        }
+                        this.AddQuizKey(quizFile, r, c);
+                    }
+                    else if (i == nKBs && quizFile == null && spellingFile != null)
+                    {
+                        this.AddSpellingKey(spellingFile, r, c);
+                    }
+                    else if (i == nKBs+1 && quizFile != null && spellingFile != null)
+                    { 
+                        this.AddSpellingKey(spellingFile, r, c);                                        
                     }
                     else 
                     {
@@ -198,6 +200,15 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             newKey.Value = new KeyValue(FunctionKeys.QuizStart, filepath);
             this.AddKey(newKey, row, col);
 
+        }
+
+        private void AddSpellingKey(string filepath, int row, int col)
+        {
+            Key newKey = new Key();
+            newKey.SharedSizeGroup = "SingleKey";
+            newKey.Text = "spelling";
+            newKey.Value = new KeyValue(FunctionKeys.SpellingQuizStart, filepath);
+            this.AddKey(newKey, row, col);
         }
 
         private void AddKeyboardKey(KeyboardInfo info, int row, int col)

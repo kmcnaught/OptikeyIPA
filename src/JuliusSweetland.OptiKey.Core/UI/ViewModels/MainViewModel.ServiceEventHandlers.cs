@@ -839,6 +839,35 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
 
                     break;
 
+                case FunctionKeys.SpellingQuizStart:
+                    var spellingJSONFile = singleKeyValue.String;
+                    SpellingQuizLoaded = new SpellingQuiz(spellingJSONFile);
+
+                    // Find spelling quiz dynamic keyboard XML
+                    // In same directory as quiz file
+                    string directory = Path.GetDirectoryName(spellingJSONFile);
+                    string spellingXMLfile = Directory.GetFiles(directory, "*spelling*.xml").FirstOrDefault();
+
+                    if (String.IsNullOrEmpty(spellingXMLfile))
+                    {
+                        Log.Error($"No dynamic keyboard found for spelling quiz: {spellingJSONFile}");
+                    }
+                    else {
+                        // Launch dynamic keyboard for this spelling quiz
+                        Action backAction2 = () =>
+                        {
+                            mainWindowManipulationService.ResizeDockToFull();
+                            Keyboard = currentKeyboard;
+                        };
+
+                        XmlKeyboard keyboard = new XmlKeyboard();                        
+                        DynamicKeyboard newKeyboard = new DynamicKeyboard(backAction2, keyStateService,
+                            spellingXMLfile, null);
+                        Keyboard = newKeyboard;
+                    }
+
+                    break;
+
                 default:
                     //Process single key text, THEN function key. The use case might be to output text and then change keyboard, for example.
                     //N.B. Combining text and a function key changes the KeyValue, which will impact whether the KeyValue can be used to detect
@@ -2650,6 +2679,47 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     SelectLanguage(Languages.EnglishUK, true);
                     inputService.RequestSuspend();
                     RaiseToastNotification("Success", "Reset dictionary to\nEnglish (UK)", NotificationTypes.Normal, () => inputService.RequestResume());
+                    break;
+
+                case FunctionKeys.SpellingQuizNext:
+                    if (SpellingQuizLoaded != null)
+                    {
+                        SpellingQuizLoaded.MoveToNextQuestion();
+                    }
+                    break;
+
+                case FunctionKeys.SpellingQuizSubmit:
+                    //fixme: maybe just log and move on, maybe launch feedback UI
+                    if (SpellingQuizLoaded != null)
+                    {
+                        SpellingQuizLoaded.MoveToNextQuestion();
+                    }
+                    break;
+
+                case FunctionKeys.SpellingQuizPlayWord:
+                    if (SpellingQuizLoaded != null)
+                    {
+                        var word = SpellingQuizLoaded.GetCurrentQuestion().Word;
+                        audioService.SpeakNewOrInterruptCurrentSpeech(
+                            word,
+                            () => { KeyStateService.KeyDownStates[KeyValues.SpeakKey].Value = KeyDownStates.Up; },
+                            Settings.Default.SpeechVolume,
+                            Settings.Default.SpeechRate,
+                            Settings.Default.SpeechVoice);
+                    }
+                    break;
+
+                case FunctionKeys.SpellingQuizPlaySentence:
+                    if (SpellingQuizLoaded != null)
+                    {
+                        var word = SpellingQuizLoaded.GetCurrentQuestion().Context;
+                        audioService.SpeakNewOrInterruptCurrentSpeech(
+                            word,
+                            () => { KeyStateService.KeyDownStates[KeyValues.SpeakKey].Value = KeyDownStates.Up; },
+                            Settings.Default.SpeechVolume,
+                            Settings.Default.SpeechRate,
+                            Settings.Default.SpeechVoice);
+                    }
                     break;
 
                 case FunctionKeys.QuizNextQuestion:                    

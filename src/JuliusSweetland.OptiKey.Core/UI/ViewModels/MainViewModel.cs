@@ -20,6 +20,7 @@ using System.Text;
 using System.Net.Http;
 using JuliusSweetland.OptiKey.Services.Suggestions;
 using System.IO;
+using JuliusSweetland.OptiKey.Models.Quizzes;
 
 namespace JuliusSweetland.OptiKey.UI.ViewModels
 {
@@ -29,6 +30,7 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private FileLogger QuizLog;
+        private SpellingQuiz SpellingQuizLoaded = null;
 
         private readonly IAudioService audioService;
         private readonly ICalibrationService calibrationService;

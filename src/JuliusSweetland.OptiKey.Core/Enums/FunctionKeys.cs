@@ -270,6 +270,11 @@ namespace JuliusSweetland.OptiKey.Enums
         ClearDictionary,
         EnglishUK_NoUI,
         QuizStart,
-        QuizNextQuestion        
+        QuizNextQuestion,
+        SpellingQuizStart,
+        SpellingQuizNext,
+        SpellingQuizSubmit,
+        SpellingQuizPlayWord,
+        SpellingQuizPlaySentence,
     }
 }

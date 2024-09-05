@@ -295,6 +295,7 @@
     <Compile Include="Models\Quizzes\QuizState.cs" />
     <Compile Include="Models\Quizzes\Question.cs" />
     <Compile Include="Models\Quizzes\Quiz.cs" />
+    <Compile Include="Models\Quizzes\SpellingQuiz.cs" />
     <Compile Include="Models\XmlKeyboardModels\XmlSuggestionGrid.xaml.cs">
       <DependentUpon>XmlSuggestionGrid.xaml</DependentUpon>
     </Compile>
