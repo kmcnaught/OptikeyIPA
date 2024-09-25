@@ -17,7 +17,6 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
             if (value == null)
                 return;
 
-
             // Normalize the string to FormD (decomposed any diacritics)
             var normalizedString = value.Normalize(NormalizationForm.FormD);
 
@@ -33,6 +32,7 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
                 '\u031F', // Advanced diacritic  ̟ 
                 '\u0361', // tie bar like t͡ʃ
                 '\u02DE', // rhotic accent "r coloured"
+                '.', // Syllable separator "."
             };
 
             // Filter out the specified diacritics
