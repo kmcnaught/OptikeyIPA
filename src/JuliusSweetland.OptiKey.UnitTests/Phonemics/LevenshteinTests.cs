@@ -55,7 +55,20 @@ namespace JuliusSweetland.OptiKey.UnitTests.Phonemics
             //TODO: copy these over/adapt, or change contract so it treats nulls as empty strings
             //NullEmptyTests.TestDistance(instance);
         }
-        
+
+
+
+        [Test]
+        public void TestResultReconstruction()
+        {
+            var instance = new WeightedLevenshtein(new ExampleCharSub());
+            var word1 = "kɑːt";
+            var word2 = "kəʊd";
+            var result = instance.Distance(word1, word2);
+
+            Assert.That(result.GetWord1().ToString(), Is.EqualTo(word1));
+            Assert.That(result.GetWord2().ToString(), Is.EqualTo(word2));
+        }
 
         [Test]
         public void TestOperations()
