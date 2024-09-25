@@ -658,7 +658,7 @@ namespace JuliusSweetland.OptiKey.UI.Controls
             else if (Keyboard is ViewModelKeyboards.SpellingResultKeyboard) // this must come before DynamicKeyboard since a quiz "is a" dynamickeyboard
             {
                 var kb = Keyboard as ViewModelKeyboards.SpellingResultKeyboard;                
-                newContent = new CommonViews.SpellingResultKeyboard(mainWindow, kb.Result, windowManipulationService) { DataContext = Keyboard };
+                newContent = new CommonViews.SpellingResultKeyboard(mainWindow, kb.Link, kb.Result, windowManipulationService) { DataContext = Keyboard };
             }
             else if (Keyboard is ViewModelKeyboards.DynamicKeyboard)
             {

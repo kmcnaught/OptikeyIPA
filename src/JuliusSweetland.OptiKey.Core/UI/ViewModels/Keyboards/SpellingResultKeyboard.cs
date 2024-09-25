@@ -12,8 +12,9 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels.Keyboards
     {
         public SpellingResultKeyboard(Action backAction,
             IKeyStateService keyStateService,
+            string inputFile,
             LevenshteinResult result,
-            Dictionary<Models.KeyValue, Enums.KeyDownStates> overrideKeyStates = null) : base(backAction, keyStateService, "", overrideKeyStates)
+            Dictionary<Models.KeyValue, Enums.KeyDownStates> overrideKeyStates = null) : base(backAction, keyStateService, inputFile, overrideKeyStates)
         {
             this.result = result;
         }

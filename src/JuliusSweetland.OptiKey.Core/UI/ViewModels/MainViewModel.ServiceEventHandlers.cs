@@ -2685,6 +2685,7 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     if (SpellingQuizLoaded != null)
                     {
                         SpellingQuizLoaded.MoveToNextQuestion();
+                        keyboardOutputService.ProcessFunctionKey(FunctionKeys.ClearScratchpad);
 
                         // go back from results page
                         var navigableKeyboard2 = Keyboard as IBackAction;
@@ -2702,7 +2703,9 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                         // Go to results page...
                         string textFromScratchpad = KeyboardOutputService.Text;
                         SpellingResultKeyboard resKeyboard = new SpellingResultKeyboard(CreateBackAction(), keyStateService,
-                            SpellingQuizLoaded.ScoreAnswer(textFromScratchpad), null);
+                            SpellingQuizLoaded.filePath,
+                            SpellingQuizLoaded.ScoreAnswer(textFromScratchpad), 
+                            null);
                         Keyboard = resKeyboard;
                     }
                     break;

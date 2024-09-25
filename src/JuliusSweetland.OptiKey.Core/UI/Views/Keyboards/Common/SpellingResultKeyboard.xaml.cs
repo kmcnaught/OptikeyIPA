@@ -41,15 +41,17 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
         private readonly IDictionary<string, List<KeyValue>> keyValueByGroup;
         private readonly IDictionary<KeyValue, TimeSpanOverrides> overrideTimesByKey;
         private readonly IWindowManipulationService windowManipulationService;
-        private readonly Quiz quiz;
-        
+        private readonly LevenshteinResult result;
+
         public SpellingResultKeyboard(
             MainWindow parentWindow, 
+            string inputFilename, 
             LevenshteinResult result,             
             IWindowManipulationService windowManipulationService)
         {
             InitializeComponent();
 
+            this.inputFilename = inputFilename;
             this.mainWindow = parentWindow;
             this.keyFamily = new List<Tuple<KeyValue, KeyValue>>();
             this.keyValueByGroup = new Dictionary<string, List<KeyValue>>();
@@ -69,6 +71,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             SetupStyle();
 
             SetupOverallQuizResult(result);
+            this.result = result;
         }
 
         //FIXME: move to shared place
@@ -1476,19 +1479,23 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
         private void SetupOverallQuizResult(LevenshteinResult result)
         {
-
-            // Score: TODO reverse-scale this to give a % accuracy
-            ScoreText.Text = $"Distance: {result.Distance}";
+            int score = (int)(100.0 * result.GetNormalisedDistance());
+            ScoreText.Text = $"Score: {score}%";
+            if (score > 90)
+                ScoreText.Foreground = Brushes.Green;
+            else if (score > 80)
+                ScoreText.Foreground = Brushes.Blue;
+            else if (score > 50)
+                ScoreText.Foreground = Brushes.Orange;
+            ScoreText.UpdateLayout();
 
             // Manage grid size.
             int nPhonemes = result.Operations.Count;
-            int totalColumns = Math.Max(10, nPhonemes);
+            int totalColumns = Math.Max(10, nPhonemes+2); // 2 allow us a "speak"
             int startingColumn = 0;
 
-
-
             // For short words, move to centre of grid
-            if (totalColumns > nPhonemes)
+            if (totalColumns > nPhonemes+2)
                 startingColumn = (totalColumns - nPhonemes) / 2;
 
             for (int i = 0; i < totalColumns; i++)
@@ -1511,6 +1518,8 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                     AddAnswerKey(c1, 0, col, false, "");
                 }
 
+                // conversion icons
+
                 // ANSWER
                 if (op != Operation.Deletion)
                 {
@@ -1518,7 +1527,12 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 }
 
                 col++;
-            }            
+            }
+
+            // Add "speak whole word" for attempt + answer
+            col = totalColumns - 1;
+            AddSoundKey(result.GetWord1().ToString(), 0, col);
+            AddSoundKey(result.GetWord2().ToString(), 2, col);
         }
 
 
@@ -1565,6 +1579,16 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
         protected override void OnLoaded(object sender, RoutedEventArgs e)
         {
             base.OnLoaded(sender, e);
+
+            // Use the Dispatcher to ensure the UI is fully rendered before updating the TextBlock
+            this.Dispatcher.InvokeAsync(() =>
+            {
+
+                //ScoreText.Text = $"Distance: {result.Distance}";
+                //ScoreText.UpdateLayout();
+
+            });
+            
             ShiftAware = keyboard != null && keyboard.IsShiftAware;
         }
 
