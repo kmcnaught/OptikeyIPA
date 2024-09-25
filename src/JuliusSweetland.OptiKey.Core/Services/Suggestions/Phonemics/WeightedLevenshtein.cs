@@ -68,7 +68,12 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
 
             if (s1.Equals(s2))
             {
-                return new LevenshteinResult(0, new List<Tuple<Operation, char, char>>());
+                var ops = new List<Tuple<Operation, char, char>>();
+                foreach (char c in s2)
+                {
+                    ops.Add(new Tuple<Operation, char, char>(Operation.Keep, c, c));
+                }
+                return new LevenshteinResult(0, ops);
             }
 
             if (s1.Length == 0)

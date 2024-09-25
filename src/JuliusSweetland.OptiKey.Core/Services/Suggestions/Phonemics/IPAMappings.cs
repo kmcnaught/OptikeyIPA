@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using JuliusSweetland.OptiKey.Extensions;
 
@@ -12,11 +14,46 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
 
         public ValidIPA(string value)
         {
+            if (value == null)
+                return;
+
+
+            // Normalize the string to FormD (decomposed any diacritics)
+            var normalizedString = value.Normalize(NormalizationForm.FormD);
+
+            // Define a set of diacritics to remove
+            var diacriticsToRemove = new HashSet<char>
+            {
+                '\u032C', // Voicing diacritic ̬ 
+                '\u02B0', // Aspiration diacritic ʰ
+                '\u0303', // Nasalization diacritic ̃ 
+                '\u0329', // Syllabic diacritic  ̩ 
+                '\u032A', // Dental diacritic ̪ 
+                '\u031F', // Retracted diacritic  ̠ 
+                '\u031F', // Advanced diacritic  ̟ 
+                '\u0361', // tie bar like t͡ʃ
+                '\u02DE', // rhotic accent "r coloured"
+            };
+
+            // Filter out the specified diacritics
+            var filteredString = new string(
+                normalizedString
+                    .Where(c => !diacriticsToRemove.Contains(c))
+                    .ToArray()
+            );
+            
+            // Normalize back to FormC (composed form)
+            value = filteredString.Normalize(NormalizationForm.FormC);
+
             Value = value.Trim()             // Remove whitespace at ends
                          .Trim('/')          // Remove '/' from start/end if present
-                         .Replace("ˈ", "")   // Remove stress markers, we don't deal with them
-                         .Replace(".", "")   // Remove syllable boundaries, we don't deal with them
-                         .Replace(":", "ː"); // Ensure "long" markers are valid character (sometimes standard colon may be used)
+                         .Replace(" ", "")   // Remove any spaces
+                         .Replace("ˈ", "")   // Remove primary stress markers, we don't deal with them
+                         .Replace("ˌ", "")   // Remove secondary stress markers, we don't deal with them
+                         .Replace('.', '\0')   // Remove syllable boundaries, we don't deal with them
+                         .Replace('\u0361'.ToString(), "") // Remove tie bars (this is done in normalisation filter I think)
+                         .Replace(":", "ː"); // Ensure "long" markers are valid character (sometimes standard colon may be used by mistake)                                             
+                         
         }
 
         public override string ToString()

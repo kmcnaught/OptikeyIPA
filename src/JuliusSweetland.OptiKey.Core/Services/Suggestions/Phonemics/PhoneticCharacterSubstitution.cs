@@ -64,10 +64,10 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
             if (c1 == IpaMappings.IpaToMapped["ɑː"] &&
                 c2 == 'æ')
             {
-
+                return 0.2;
             }
             if ((c1 == IpaMappings.IpaToMapped["eə"] && c2 == 'e') ||
-                (c1 == IpaMappings.IpaToMapped["iː"] && c2 == 'i') ||
+                (c1 == IpaMappings.IpaToMapped["iː"] && c2 == 'i') ||                
                 (c1 == IpaMappings.IpaToMapped["uː"] && c2 == 'u') ||
                 (c1 == IpaMappings.IpaToMapped["ɑː"] && c2 == 'ɑ') ||
                 (c1 == IpaMappings.IpaToMapped["ɑː"] && c2 == 'æ') ||
@@ -112,7 +112,8 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
             }
 
             // Misc
-            if ((c1 == 'f' && c2 == 'θ'))
+            if ((c1 == 'f' && c2 == 'θ') ||
+                (c1 == 'ɪ' && c2 == 'i')) // i gets used as "ɪ or i:" for ambiguous pronunciations
             {
                 return 0.1;
             }
