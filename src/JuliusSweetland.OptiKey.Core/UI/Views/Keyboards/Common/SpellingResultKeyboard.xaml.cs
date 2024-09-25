@@ -1390,8 +1390,37 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             return commands;
         }
 
+        // Illustrative key to show insertion/deletion/etc
+        void AddEditOperationKey(int row, int column, string label, string symbol, string colour,
+                                 int rowspan = 1, int colspan = 1)
+        {
+            XmlDynamicKey dynKey = new XmlDynamicKey();
 
-       
+            if (label != null) 
+                dynKey.Label = label;
+            if (symbol != null) 
+                dynKey.Symbol = new XmlDynamicSymbol(symbol);
+            if (colour != null)
+                dynKey.ForegroundColor = colour;
+
+            dynKey.BackgroundColor = "#ff000000";
+                
+            //dynKey.Margin = "70";
+
+            dynKey.Row = row;
+            dynKey.Col = column;
+            dynKey.Width = colspan;
+            dynKey.Height = rowspan;
+
+            //fixme: we don't need all the logic in AddDynamicKey
+            // either extract to shared method, or simplify here
+            Key newKey = AddDynamicKey(dynKey, 1, 1, "A");
+            PlaceKeyInPosition(AnswersGrid, newKey,
+                               dynKey.Row, dynKey.Col,
+                               dynKey.Height, dynKey.Width);
+        }
+
+
 
         void AddAnswerKey(string option, int row, int column, bool correct, string hint, int rowspan=1, int colspan=1)
         {
@@ -1517,6 +1546,42 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 {
                     AddAnswerKey(c1, 0, col, false, "");
                 }
+
+                // EDITS (whether substitution/deletion/insertion)
+                string symbol = null;
+                string colour = null;
+                string label = null;
+
+                switch (op)
+                {
+                    case Operation.Deletion:
+                        // cross symbol
+                        //symbol = "m 47.092371 38.3015 -7.365711 -7.39241 7.365711 -7.392558 -3.837021 -3.850858 -7.365562 7.392558 -7.36571 -7.392558 -3.83687 3.850858 7.36571 7.392558 -7.36571 7.39241 3.83687 3.851006 7.36571 -7.392558 7.365562 7.392558 3.837021 -3.851006 z M 3.1738537 36.189383 16.492042 49.556116 c 1.642397 1.648234 3.028841 2.262065 6.005006 2.262065 l 31.249728 0 c 4.109191 0 7.44041 -3.343365 7.44041 -7.467533 l 0 -26.883116 c 0 -4.124168 -3.331219 -7.4675325 -7.44041 -7.4675325 l -31.249728 0 c -2.976165 0 -4.362609 0.6142785 -6.005006 2.2625125 L 3.1738537 25.628797 c -2.90562889 2.916221 -2.90562889 7.644365 0 10.560586 z M 22.497048 47.337662 c -1.488082 0 -2.076171 -0.175039 -2.848189 -0.949721 L 6.3306708 33.021207 c -1.1623403 -1.166429 -1.1623403 -3.057656 0 -4.224234 L 19.648859 15.430687 c 0.772018 -0.774681 1.360107 -0.950169 2.848189 -0.950019 l 31.249728 0 c 1.643736 0 2.976164 1.337286 2.976164 2.987012 l 0 26.883117 c 0 1.64958 -1.332428 2.987013 -2.976164 2.987013 l -31.249728 -1.48e-4 z";
+                        //symbol = "NoIcon";
+                        colour = "#ff0000";
+                        label = "✘"; 
+                        break;
+                    case Operation.Insertion:
+                        // plus symbol
+                        symbol = "m 36.5429 45.7497 v 0 l 0.000258 - 9.20676 h 9.2065 c 2.5091 - 0.000259 4.54298 - 2.03413 4.54298 - 4.54298 c 0.000258 - 2.5091 - 2.03387 - 4.54272 - 4.54272 - 4.54272 l - 9.20676 - 0.000259 l 1e-06 - 9.20702 c - 0.000259 - 2.5091 - 2.03413 - 4.54298 - 4.54297 - 4.54297 c - 2.5091 - 0.000259 - 4.54272 2.03387 - 4.54272 4.54272 l 0.000258 9.2078 l - 9.2078 0.000259 c - 2.50858 - 0.000259 - 4.5422 2.03336 - 4.54246 4.54246 c - 0.000258 2.5091 2.03336 4.54272 4.54246 4.54246 l 0.000259 0.000258 l 9.20805 0 l 0.000258 9.20728 c - 0.000517 2.50884 2.0331 4.54246 4.54246 4.54246 c 2.50832 0 4.54194 - 2.03362 4.54194 - 4.54298 z"; 
+                        colour = "#ff3300";
+                        label = "+";
+                        break;
+                    case Operation.Keep:
+                        // tick symbol
+                        //symbol = "YesIcon";
+                        label = "✔";  
+                        colour = "#00ff00";
+                        break;
+                    case Operation.Substitution:
+                        // arrow symbol
+                        //symbol = "DownArrowKeyIcon";
+                        colour = "#ffff00";
+                        label = "↓";
+                        break;
+                }
+
+                AddEditOperationKey(1, col, label, symbol, colour);
 
                 // conversion icons
 
