@@ -37,7 +37,10 @@ namespace JuliusSweetland.OptiKey.Models.Quizzes
         }
 
         public LevenshteinResult ScoreAnswer(string answer)
-        {
+        {            
+            if (answer == null)
+                answer = "";
+
             var D = new PhonemicDistance();
             ValidIPA ipaGuess = new ValidIPA(answer);
             ValidIPA ipaCorrectAnswer = new ValidIPA(GetCurrentQuestion().Answer);
