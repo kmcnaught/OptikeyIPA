@@ -91,11 +91,12 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
             // Look for quiz/spelling tests to append
             string quizzesFolderPath = Path.Combine(keyboardsPath, "quizzes");
-            var quizFiles = Directory.GetFiles(quizzesFolderPath, "quiz*.json");
-            var spellingFiles = Directory.GetFiles(quizzesFolderPath, "spelling*.json");
             string quizFile = null;
             string spellingFile = null;
-            if (Directory.Exists(quizzesFolderPath)) { 
+            if (Directory.Exists(quizzesFolderPath)) {
+                var quizFiles = Directory.GetFiles(quizzesFolderPath, "quiz*.json");
+                var spellingFiles = Directory.GetFiles(quizzesFolderPath, "spelling*.json");
+
                 quizFile = quizFiles.Count() > 0 ? quizFiles[0] : null;
                 spellingFile = spellingFiles.Count() > 0 ? spellingFiles[0] : null;
             }
