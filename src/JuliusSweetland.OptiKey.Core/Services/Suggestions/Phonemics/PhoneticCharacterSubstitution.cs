@@ -76,6 +76,12 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
                 return 0.1;
             }
 
+            // scottish special - Loch - free conversion to "k" as we don't have "ch"
+            if (c1 == 'x' && c2 == 'k')
+            {
+                return 0.0;
+            }
+
             // Voiced vs. Voiceless Consonants
             if ((c1 == 'p' && c2 == 'b') ||
                 (c1 == 't' && c2 == 'd') ||
@@ -113,7 +119,9 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
 
             // Misc
             if ((c1 == 'f' && c2 == 'θ') ||
-                (c1 == 'ɪ' && c2 == 'i')) // i gets used as "ɪ or i:" for ambiguous pronunciations
+                (c1 == IpaMappings.IpaToMapped["oʊ"] && c2 == IpaMappings.IpaToMapped["əʊ"]) || // we don't have oʊ but əʊ is v close
+                (c1 == 'ɪ' && c2 == 'i')
+                ) // i gets used as "ɪ or i:" for ambiguous pronunciations
             {
                 return 0.1;
             }
