@@ -44,7 +44,7 @@ namespace JuliusSweetland.OptiKey.Models.Quizzes
             var D = new PhonemicDistance();
             ValidIPA ipaGuess = new ValidIPA(answer);
             ValidIPA ipaCorrectAnswer = new ValidIPA(GetCurrentQuestion().Answer);
-            return D.Distance(ipaGuess, ipaCorrectAnswer);
+            return D.Distance(new OneCharacterIPA(ipaGuess), new OneCharacterIPA(ipaCorrectAnswer));
         }
 
         public void MoveToNextQuestion()
