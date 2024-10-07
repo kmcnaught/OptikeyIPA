@@ -50,7 +50,7 @@ namespace JuliusSweetland.OptiKey.Pro
         {
             // Setup derived settings class
             Settings.Initialise();
-            String appName = "OptikeyPro";
+            String appName = "OptikeyPhonemes";
 
             Action runApp = () =>
             {
