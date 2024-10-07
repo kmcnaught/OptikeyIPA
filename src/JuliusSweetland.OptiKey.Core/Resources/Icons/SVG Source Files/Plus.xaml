@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<ResourceDictionary xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <DrawingGroup x:Key="Plus_xaml">
+        <DrawingGroup.ClipGeometry>
+            <RectangleGeometry Rect="0,0,64.0,64.0"/>
+        </DrawingGroup.ClipGeometry>
+        <GeometryDrawing Brush="#ff000000">
+            <GeometryDrawing.Geometry>
+                <PathGeometry Figures="m 36.5429 45.7497 v 0 l 0.000258 -9.20676 h 9.2065 c 2.5091 -0.000259 4.54298 -2.03413 4.54298 -4.54298 c 0.000258 -2.5091 -2.03387 -4.54272 -4.54272 -4.54272 l -9.20676 -0.000259 l 1e-06 -9.20702 c -0.000259 -2.5091 -2.03413 -4.54298 -4.54297 -4.54297 c -2.5091 -0.000259 -4.54272 2.03387 -4.54272 4.54272 l 0.000258 9.2078 l -9.2078 0.000259 c -2.50858 -0.000259 -4.5422 2.03336 -4.54246 4.54246 c -0.000258 2.5091 2.03336 4.54272 4.54246 4.54246 l 0.000259 0.000258 l 9.20805 0 l 0.000258 9.20728 c -0.000517 2.50884 2.0331 4.54246 4.54246 4.54246 c 2.50832 0 4.54194 -2.03362 4.54194 -4.54298 z" FillRule="Nonzero"/>
+            </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+    </DrawingGroup>
+    <DrawingBrush Stretch="Uniform" Drawing="{StaticResource Plus_xaml}" x:Key="db_Plus_xaml"/>
+</ResourceDictionary>
