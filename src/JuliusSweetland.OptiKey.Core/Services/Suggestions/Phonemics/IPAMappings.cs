@@ -50,10 +50,19 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
                          .Replace(" ", "")   // Remove any spaces
                          .Replace("ˈ", "")   // Remove primary stress markers, we don't deal with them
                          .Replace("ˌ", "")   // Remove secondary stress markers, we don't deal with them
+                         .Replace("ɡ", "g")   // Equivalent forms of 'g'
                          .Replace('.', '\0')   // Remove syllable boundaries, we don't deal with them
                          .Replace('\u0361'.ToString(), "") // Remove tie bars (this is done in normalisation filter I think)
                          .Replace(":", "ː"); // Ensure "long" markers are valid character (sometimes standard colon may be used by mistake)                                             
-                         
+
+            // US -> UK specific replacements (in case US-phonemes creep into reference spellings)
+            Value = Value.Replace("oʊ", "əʊ")
+                         .Replace("ɾ", "t")
+                         .Replace("ɑ", "ɒ")
+                         .Replace("ɝː", "ɜː")// I think this comes out with normalisation anyway
+                         .Replace("ɚ", "ə"); // I think this comes out with normalisation anyway
+
+
         }
 
         public override string ToString()
@@ -225,23 +234,25 @@ namespace JuliusSweetland.OptiKey.Services.Suggestions.Phonemics
         // to be semantically meaningful
         public static readonly Dictionary<string, char> IpaToMapped = new Dictionary<string, char>
         {
-            { "ɔɪ",  'O' },
-            { "ɪʊ",  'S' },
-            { "eə",  'Z' },
-            { "iː",  'I' },
-            { "uː",  'U' },
             { "ɑː",  'A' },
+            { "ɜː", 'B' },
             { "ɔː",  'C' },
-            { "eɪ", 'E' },
-            { "əʊ", 'W' },
             { "dʒ", 'D' },
-            { "ks", 'X' },
-            { "kw", 'Q' },
-            { "aɪ", 'Y' },
-            { "aʊ", 'V' },
+            { "eɪ", 'E' },
+            { "iː",  'I' },
             { "ɪə", 'J' },
+            { "ɔɪ",  'O' },
+            { "oʊ", 'P' },
+            { "kw", 'Q' },
             { "ʊə", 'R' },
+            { "ɪʊ",  'S' },
             { "tʃ", 'T' },
+            { "uː",  'U' },
+            { "aʊ", 'V' },
+            { "əʊ", 'W' },
+            { "ks", 'X' },
+            { "aɪ", 'Y' },
+            { "eə",  'Z' },
         };
 
         public static readonly Dictionary<char, string> MappedToIpa = new Dictionary<char, string>();

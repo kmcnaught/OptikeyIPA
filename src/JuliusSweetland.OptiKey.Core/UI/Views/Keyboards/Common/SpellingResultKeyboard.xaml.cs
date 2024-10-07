@@ -78,7 +78,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
         public static Dictionary<string, string> PhonemeSymbols = new Dictionary<string, string>
         {
             { "iː", "images/sea.png" },
-            { "ɜ", "images/shirt.jpg" },
+            { "ɜː", "images/shirt.jpg" },
             { "ɪə", "images/deer.jpg" },
             { "ɔː", "images/four.jpg" },
             { "ʊə", "images/manure.jpg" },
@@ -103,7 +103,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
 
         public static Dictionary<string, string> PhonemeLabels = new Dictionary<string, string>
         {
-            { "ɛ", "e" },
+            { "ɛ", "e" },            
             { "ʌ", "u" },
             //{ "ʊ", "ʊ" },
             { "ɪ", "i" },
@@ -124,6 +124,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             { "kw", "consonants" },
             { "w", "consonants" },
             { "ɛ", "shortvowels" },
+            { "e", "shortvowels" },
             { "r", "consonants" },
             { "t", "consonants" },
             { "j", "consonants" },
@@ -134,7 +135,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             { "ɑː", "longvowels" },
             { "eɪ", "diphthongs" },
             { "eə", "longvowels" },
-            { "ɜ", "longvowels" },
+            { "ɜ:", "longvowels" },
             { "ð", "consonants2" },
             { "θ", "consonants2" },
             { "ʊ", "shortvowels" },
@@ -144,7 +145,7 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             { "s", "consonants" },
             { "d", "consonants" },
             { "f", "consonants" },
-            { "ɡ", "consonants" },
+            { "g", "consonants" },
             { "h", "consonants" },
             { "dʒ", "consonants" },
             { "k", "consonants" },
