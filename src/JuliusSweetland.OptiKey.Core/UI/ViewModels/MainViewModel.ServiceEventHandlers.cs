@@ -16,6 +16,7 @@ using JuliusSweetland.OptiKey.Models.Quizzes;
 using JuliusSweetland.OptiKey.Properties;
 using JuliusSweetland.OptiKey.Services.PluginEngine;
 using JuliusSweetland.OptiKey.Services.Suggestions;
+using JuliusSweetland.OptiKey.Services.Suggestions.Phonemics;
 using JuliusSweetland.OptiKey.Services.Translation;
 using JuliusSweetland.OptiKey.Static;
 using JuliusSweetland.OptiKey.UI.ViewModels.Keyboards;
@@ -842,6 +843,13 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                 case FunctionKeys.SpellingQuizStart:
                     var spellingJSONFile = singleKeyValue.String;
                     SpellingQuizLoaded = new SpellingQuiz(spellingJSONFile);
+
+                    // Set up new quiz log
+                    var quizDirectory2 = new FileInfo(spellingJSONFile).Directory.FullName;
+                    string filename2 = $"quiz_{DateTime.Now:yy-MM-dd_HH-mm-ss}.txt";
+                    string logFilePath2 = Path.Combine(quizDirectory2, filename2);
+                    QuizLog = new FileLogger(logFilePath2);
+                    QuizLog.Log($"Loaded log: {spellingJSONFile}");
 
                     // Find spelling quiz dynamic keyboard XML
                     // In same directory as quiz file
@@ -2702,9 +2710,25 @@ namespace JuliusSweetland.OptiKey.UI.ViewModels
                     {
                         // Go to results page...
                         string textFromScratchpad = KeyboardOutputService.Text;
+                        QuizLog.Log("Submitted spelling attempt");
+                        var result = SpellingQuizLoaded.ScoreAnswer(textFromScratchpad);
+
+                        QuizLog.Log($"Correct answer: {result.GetWord2()}");
+                        QuizLog.Log($"Spelling attempt: {result.GetWord1()}");
+                        int score = (int)(100.0 * result.GetNormalisedDistance());
+                        QuizLog.Log($"Score: {score}%");
+                        QuizLog.Log($"Modifications: ");
+                        foreach (var op in result.Operations)
+                        {
+                            var c1 = new OneCharacterIPA(op.Item2).ToIPA().ToString();
+                            var c2 = new OneCharacterIPA(op.Item3).ToIPA().ToString();
+
+                            QuizLog.Log($"{op.Item1} ({c1},{c2})");
+                        }
+
                         SpellingResultKeyboard resKeyboard = new SpellingResultKeyboard(CreateBackAction(), keyStateService,
                             SpellingQuizLoaded.filePath,
-                            SpellingQuizLoaded.ScoreAnswer(textFromScratchpad), 
+                            result, 
                             null);
                         Keyboard = resKeyboard;
                     }

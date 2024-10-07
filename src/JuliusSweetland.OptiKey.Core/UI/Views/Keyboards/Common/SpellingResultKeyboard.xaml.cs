@@ -1453,23 +1453,13 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
             //FIXME: add colour appropriate (once Heather has confirmed layout)            
 
             string correctness = correct ? "correct" : "incorrect";
-            dynKey.Commands.Add(new DynamicLog($"SLT: Chose { correctness } answer {option}"));
+            dynKey.Commands.Add(new DynamicLog($"Sounded out phoneme {option}"));
             if (option.EndsWith("ː") ||
                 option.EndsWith(":")) // : request is ignored by synth engine
                 dynKey.Commands.Add(new DynamicPronounceSlow(option));
             else
                 dynKey.Commands.Add(new DynamicPronounce(option));
-
-            if (correct)
-                dynKey.Commands.Add(new DynamicAnswerCorrect(hint));
-            else
-                dynKey.Commands.Add(new DynamicAnswerIncorrect(hint));
-
-            // FIXME: what do we do at quiz end? Toast? I think this happens
-            // via the `Answer` function key handling though
-
-            //dynKey.Margin = "70";
-
+            
             dynKey.Row = row;
             dynKey.Col = column;
             dynKey.Width = colspan;
@@ -1495,10 +1485,12 @@ namespace JuliusSweetland.OptiKey.UI.Views.Keyboards.Common
                 dynKey.Commands.Add(new DynamicPronounceSlow(option));
             else
                 dynKey.Commands.Add(new DynamicPronounce(option));
-            dynKey.Commands.Add(new DynamicLog($"SLT: Sounded out {option}"));
+
+            dynKey.Commands.Add(new DynamicLog($"Sounded out {option}"));
 
             dynKey.Row = row;
             dynKey.Col = column;
+
             //fixme: we don't need all the logic in AddDynamicKey
             // either extract to shared method, or simplify here
             Key newKey = AddDynamicKey(dynKey, 1, 1, "A");
